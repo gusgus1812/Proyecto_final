@@ -1,0 +1,31 @@
+{
+  "pozos": 34132,
+  "campos_con_pozos": 451,
+  "campos_total": 477,
+  "por_estado": {
+    "Inactivo": 25293,
+    "Activo": 6886,
+    "Sin dato": 1953
+  },
+  "estados_texto_original": {
+    "INACTIVO": 15054,
+    "CERRADO": 10172,
+    "PRODUCTOR": 6784,
+    "TAPONAMIENTO PERMANENTE": 1729,
+    "TAPONAMIENTO TEMPORAL": 201,
+    "INYECTOR PARA RECUPERACION SECUNDARIA O MEJORADA": 65,
+    "CERRADO ESPERANDO INSTALACIONES DE PRODUCCION": 43,
+    "OPERANDO": 29,
+    "(vacio)": 21,
+    "SUSPENDIDO": 21,
+    "INYECTOR RECUPERACION SECUNDARIA O MEJORADA": 3,
+    "INYECTOR PARA DISPOSICION O DISPOSICION O CONVERTIDO EN DE DISPOSICION DE RESIDUOS O RECORTES": 3,
+    "PRODUCTOR CON INSTALACIONES TEMPORALES": 2,
+    "ESPERANDO ABANDONO": 2,
+    "EN CONSTRUCCION": 1
+  },
+  "pozos_sin_campo_reconocido": 7525,
+  "coordenadas_descartadas": 0,
+  "sin_coordenadas": 0,
+  "sin_fecha_inicio": 1664
+}
