@@ -1,0 +1,7 @@
+{
+  "files.encoding": "utf8",
+  "python.analysis.typeCheckingMode": "off",
+  "liveServer.settings.root": "/web",
+  "liveServer.settings.file": "index.html",
+  "editor.formatOnSave": false
+}

@@ -1,0 +1,63 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Limpiar y analizar datos",
+      "type": "shell",
+      "command": "python3 scripts/01_limpieza_analisis.py",
+      "windows": {
+        "command": "python scripts/01_limpieza_analisis.py"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "2. Generar web/index.html",
+      "type": "shell",
+      "command": "python3 scripts/02_build_web.py",
+      "windows": {
+        "command": "python scripts/02_build_web.py"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "3. Descargar pozos de la CNH (internet)",
+      "type": "shell",
+      "command": "python3 scripts/05_descargar_pozos_arcgis.py",
+      "windows": {
+        "command": "python scripts/05_descargar_pozos_arcgis.py"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "4. Normalizar pozos descargados",
+      "type": "shell",
+      "command": "python3 scripts/03_normalizar_pozos.py data/external/pozos_arcgis_crudo.csv",
+      "windows": {
+        "command": "python scripts/03_normalizar_pozos.py data/external/pozos_arcgis_crudo.csv"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Probar el descargador (sin internet)",
+      "type": "shell",
+      "command": "python3 tests/test_05_arcgis_simulado.py",
+      "windows": {
+        "command": "python tests/test_05_arcgis_simulado.py"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Todo (limpiar + generar web)",
+      "dependsOn": [
+        "1. Limpiar y analizar datos",
+        "2. Generar web/index.html"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

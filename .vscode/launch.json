@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: limpieza y análisis",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/01_limpieza_analisis.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: generar web",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/02_build_web.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: descargar pozos",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/05_descargar_pozos_arcgis.py",
+      "console": "integratedTerminal"
+    }
+  ]
+}
