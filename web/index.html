@@ -676,6 +676,8 @@ const GLOS=[
 $('#gl').innerHTML=GLOS.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
 
 /* ---------- mapa ---------- */
+// campos que NO se dibujan en el mapa (coordenadas dudosas en la fuente); siguen apareciendo en el resto del dashboard
+const MAPA_EXCLUIR=new Set(['RIBERENO']);
 let map=null,layerC=null,layerP=null,lastFit=null;
 function loadStore(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
 function saveStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -827,7 +829,7 @@ function renderMap(){
       if(ws.length)der.push({nombre:d.nombre,lat:med(ws.map(w=>w.lat)),lon:med(ws.map(w=>w.lon)),nota:'centro de '+ws.length+' pozos'})});
     const dn=new Set(der.map(c=>c.nombre));
     der.concat(coords.filter(c=>!dn.has((c.nombre||'').toUpperCase()))).forEach(c=>{const d=byName[(c.nombre||'').toUpperCase()];const lat=parseFloat(c.lat),lon=parseFloat(c.lon);
-      if(!d||isNaN(lat)||isNaN(lon)||!F.has(d.nombre))return;n++;
+      if(!d||isNaN(lat)||isNaN(lon)||!F.has(d.nombre)||MAPA_EXCLUIR.has(d.nombre))return;n++;
       const r=Math.max(5,Math.sqrt(d[col])*1.1);
       const m=L.circleMarker([lat,lon],{radius:Math.min(r,40),color:d.nombre===state.sel?'#000':'#fff',weight:2,fillColor:getComputedStyle(document.documentElement).getPropertyValue({Terrestre:'--terr',Marino:'--mar','Aguas someras':'--som'}[d.ubicacion]).trim(),fillOpacity:.75}).addTo(layerC);
       m.bindTooltip(`${d.nombre} · ${nf0(d[col])} MMBPCE ${state.cat.toUpperCase()}${c.nota?' · '+c.nota:''}`);
