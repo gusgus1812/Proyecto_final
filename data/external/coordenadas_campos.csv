@@ -1,8 +1,452 @@
-nombre,lat,lon,nota
-AKAL,19.85,-92.05,referencial (Sonda de Campeche)
-MALOOB,19.60,-92.20,referencial (Sonda de Campeche)
-AYATSIL,19.70,-92.30,referencial (Sonda de Campeche)
-TRION,24.60,-96.70,referencial (Cinturón Plegado Perdido)
-ZAMA,18.85,-93.50,referencial (Cuenca Salina)
-IXACHI,18.40,-95.90,referencial (Cuenca de Veracruz)
-QUESQUI,17.90,-93.50,referencial (Cuencas del Sureste)
+﻿nombre,lat,lon,nota
+TAMAULIPAS CONSTITUCIONES,22.4447,-97.93153,mediana de 875 pozos; extension ~18 km
+POZA RICA,20.51326,-97.4216,mediana de 800 pozos; extension ~21 km
+EBANO CHAPACAO,22.26881,-98.28806,mediana de 796 pozos; extension ~583 km
+MAGALLANES TUCAN PAJONAL,18.15157,-93.88446,mediana de 746 pozos; extension ~16 km
+CACALILAO,22.16074,-98.21676,mediana de 644 pozos; extension ~28 km
+PANUCO,22.07044,-98.19591,mediana de 618 pozos; extension ~500 km
+CULEBRA,25.93631,-99.04777,mediana de 608 pozos; extension ~30 km
+SAMARIA,17.99495,-93.09519,mediana de 592 pozos; extension ~67 km
+FURBERO,20.36268,-97.44916,mediana de 586 pozos; extension ~25 km
+OGARRIO,18.02616,-93.93069,mediana de 536 pozos; extension ~12 km
+PRESIDENTE ALEMAN,20.37322,-97.34844,mediana de 523 pozos; extension ~25 km
+COAPECHACA,20.46542,-97.59939,mediana de 496 pozos; extension ~16 km
+AKAL,19.41839,-92.06023,mediana de 484 pozos; extension ~20 km
+CUITLAHUAC,25.70227,-98.48326,mediana de 456 pozos; extension ~39 km
+AGUA FRIA,20.51829,-97.62831,mediana de 448 pozos; extension ~15 km
+NEJO,24.73675,-98.02148,mediana de 441 pozos; extension ~17 km
+CINCO PRESIDENTES,18.20261,-94.01307,mediana de 421 pozos; extension ~11 km
+TAJIN,20.44598,-97.51923,mediana de 393 pozos; extension ~19 km
+ARCABUZ,26.13581,-99.07679,mediana de 376 pozos; extension ~18 km
+HUMAPA,20.61911,-97.78812,mediana de 368 pozos; extension ~16 km
+SAN ANDRES,20.38212,-97.18673,mediana de 354 pozos; extension ~13 km
+REYNOSA,25.99015,-98.25123,mediana de 336 pozos; extension ~28 km
+CORRALILLO,20.52259,-97.5527,mediana de 280 pozos; extension ~20 km
+SOLEDAD NORTE,20.96515,-97.8355,mediana de 274 pozos; extension ~9 km
+REMOLINO,20.38113,-97.25552,mediana de 250 pozos; extension ~21 km
+SANTA ROSALIA,26.07162,-98.9542,mediana de 244 pozos; extension ~20 km
+VELERO,26.57252,-99.26862,mediana de 224 pozos; extension ~17 km
+ARCOS,26.48718,-99.17699,mediana de 203 pozos; extension ~20 km
+SAN RAMON,18.23688,-93.91263,mediana de 184 pozos; extension ~5 km
+TOPILA,22.0692,-98.04692,mediana de 176 pozos; extension ~33 km
+CORINDON,27.18922,-99.46021,mediana de 172 pozos; extension ~19 km
+TRES HERMANOS,21.47021,-97.74891,mediana de 172 pozos; extension ~16 km
+TUPILCO,18.34672,-93.36597,mediana de 165 pozos; extension ~8 km
+SOLEDAD,20.91829,-97.80336,mediana de 157 pozos; extension ~13 km
+CUERVITO,25.93427,-98.80255,mediana de 156 pozos; extension ~12 km
+CUATRO MILPAS,25.72592,-98.96976,mediana de 155 pozos; extension ~14 km
+MIQUETLA,20.79178,-97.67876,mediana de 153 pozos; extension ~53 km
+COYOTES,21.05079,-97.8723,mediana de 152 pozos; extension ~14 km
+ALTAMIRA,22.50503,-98.1753,mediana de 149 pozos; extension ~62 km
+EL GOLPE,18.32397,-93.42346,mediana de 148 pozos; extension ~5 km
+LOS SOLDADOS,17.97346,-94.12042,mediana de 144 pozos; extension ~22 km
+PALMITO,25.44936,-98.8648,mediana de 140 pozos; extension ~15 km
+COMITAS,25.74916,-98.60445,mediana de 137 pozos; extension ~12 km
+ESCOBAL,20.46788,-97.68554,mediana de 137 pozos; extension ~10 km
+TOTECO CERRO AZUL,21.1965,-97.73932,mediana de 132 pozos; extension ~10 km
+COYOL,20.72811,-97.83485,mediana de 131 pozos; extension ~18 km
+ABKATUN,19.29605,-92.18118,mediana de 130 pozos; extension ~22 km
+MONTERREY,25.85239,-98.25085,mediana de 130 pozos; extension ~431 km
+COYULA,20.56032,-97.74557,mediana de 130 pozos; extension ~737 km
+BENAVIDES,25.59258,-98.94511,mediana de 129 pozos; extension ~19 km
+BLASILLO,18.04829,-94.04802,mediana de 129 pozos; extension ~6 km
+CORCOVADO,22.30215,-98.19082,mediana de 128 pozos; extension ~88 km
+JOSE COLOMO,17.96223,-92.46915,mediana de 127 pozos; extension ~14 km
+MOJARRENAS,25.90874,-98.94562,mediana de 120 pozos; extension ~11 km
+SALINAS BARCO CARACOL,22.17972,-98.10295,mediana de 120 pozos; extension ~20 km
+CANON,26.14298,-98.47255,mediana de 116 pozos; extension ~7 km
+JILIAPA,20.70172,-97.6029,mediana de 112 pozos; extension ~5 km
+LIMON,22.13585,-98.46462,mediana de 111 pozos; extension ~14 km
+SUR DE AMATLAN,21.2867,-97.71104,mediana de 108 pozos; extension ~22 km
+MALOOB,19.59182,-92.23957,mediana de 107 pozos; extension ~9 km
+TIERRA BLANCA CHAPOPOTE NUNEZ,20.96529,-97.71202,mediana de 107 pozos; extension ~125 km
+SANTUARIO,18.25947,-93.50638,mediana de 99 pozos; extension ~8 km
+AGUA NACIDA,20.85591,-97.61845,mediana de 99 pozos; extension ~15 km
+HALLAZGO,20.32738,-97.1672,mediana de 99 pozos; extension ~9 km
+KU,19.50925,-92.17384,mediana de 96 pozos; extension ~21 km
+LOMITAS,26.11467,-98.43411,mediana de 95 pozos; extension ~17 km
+SANTA ANITA,26.06866,-98.82305,mediana de 94 pozos; extension ~17 km
+CACTUS,17.88273,-93.17298,mediana de 94 pozos; extension ~9 km
+RABASA,18.13657,-94.2025,mediana de 93 pozos; extension ~7 km
+RODADOR,18.22023,-93.974,mediana de 93 pozos; extension ~3 km
+ZAAP,19.5626,-92.23615,mediana de 91 pozos; extension ~11 km
+CASTARRICAL,18.38937,-93.31005,mediana de 91 pozos; extension ~5 km
+ALAZAN,21.11719,-97.73774,mediana de 91 pozos; extension ~26 km
+CARDENAS,18.00613,-93.44932,mediana de 89 pozos; extension ~11 km
+PANDURA,27.24837,-99.5209,mediana de 87 pozos; extension ~12 km
+BACAL,17.80335,-93.94634,mediana de 87 pozos; extension ~10 km
+IRIDE,18.02814,-93.05249,mediana de 86 pozos; extension ~7 km
+VIBORITAS,25.97839,-98.97085,mediana de 83 pozos; extension ~8 km
+SANTA AGUEDA,20.58857,-97.31182,mediana de 82 pozos; extension ~5 km
+ARAGON,20.97987,-97.91077,mediana de 81 pozos; extension ~12 km
+TOPO,25.81646,-98.8012,mediana de 80 pozos; extension ~13 km
+CARRETAS,25.83332,-98.9396,mediana de 80 pozos; extension ~11 km
+PENA BLANCA,25.83267,-99.00083,mediana de 78 pozos; extension ~9 km
+OTATES,18.09481,-93.95933,mediana de 77 pozos; extension ~6 km
+CUNDUACAN,18.06445,-93.0983,mediana de 76 pozos; extension ~9 km
+MISION,26.188,-98.49159,mediana de 74 pozos; extension ~11 km
+SOLIS TIERRA AMARILLA,21.15505,-97.68705,mediana de 74 pozos; extension ~6 km
+MATA PIONCHE,18.84836,-96.41406,mediana de 73 pozos; extension ~9 km
+CERRO VIEJO,21.02409,-97.72723,mediana de 72 pozos; extension ~51 km
+CHILAPILLA,17.94225,-92.51734,mediana de 67 pozos; extension ~10 km
+BARCODON,22.57755,-97.96648,mediana de 66 pozos; extension ~51 km
+JUAN FELIPE,21.16026,-97.74403,mediana de 64 pozos; extension ~8 km
+PUERTO CEIBA,18.43567,-93.23218,mediana de 62 pozos; extension ~6 km
+VERNET,17.88785,-92.61484,mediana de 62 pozos; extension ~8 km
+CAPARROSO PIJIJE ESCUINTLE,18.38682,-92.82033,mediana de 61 pozos; extension ~546 km
+HORCONES,21.06558,-97.83716,mediana de 61 pozos; extension ~14 km
+LIZAMBA,18.52249,-95.96304,mediana de 61 pozos; extension ~14 km
+ARTESA,17.732,-93.13837,mediana de 60 pozos; extension ~4 km
+AGAVE,17.74361,-92.89413,mediana de 56 pozos; extension ~10 km
+CERRO DEL CARBON,20.42024,-97.2663,mediana de 56 pozos; extension ~6 km
+SEN,18.31929,-92.93303,mediana de 55 pozos; extension ~13 km
+ALAMO SAN ISIDRO,20.89905,-97.67011,mediana de 55 pozos; extension ~10 km
+SIGMA,25.9092,-98.52446,mediana de 54 pozos; extension ~10 km
+RANCHO NUEVO,21.54421,-97.67905,mediana de 54 pozos; extension ~7 km
+SANTA ANA,18.34383,-93.78127,mediana de 53 pozos; extension ~10 km
+AYATSIL,19.63597,-92.33609,mediana de 52 pozos; extension ~7 km
+TORRECILLAS,25.82209,-98.50481,mediana de 52 pozos; extension ~14 km
+SUR CHINAMPA NORTE DE AMATLAN,21.33426,-97.70092,mediana de 52 pozos; extension ~8 km
+OASIS,27.31448,-99.52649,mediana de 51 pozos; extension ~9 km
+LACAMANGO,17.91009,-94.33743,mediana de 50 pozos; extension ~3 km
+MORALILLO,21.19103,-97.81702,mediana de 50 pozos; extension ~4 km
+SITIO GRANDE,17.78494,-93.12397,mediana de 49 pozos; extension ~10 km
+PAPANTLA,20.44385,-97.30835,mediana de 49 pozos; extension ~4 km
+TEMAPACHE,21.09868,-97.64119,mediana de 49 pozos; extension ~9 km
+BELLOTA,18.09404,-93.31671,mediana de 47 pozos; extension ~11 km
+MECAYUCAN,18.77138,-96.379,mediana de 47 pozos; extension ~6 km
+OXIACAQUE,18.07976,-93.04666,mediana de 46 pozos; extension ~11 km
+ATUN,20.86463,-97.01402,mediana de 45 pozos; extension ~7 km
+ARENQUE,22.25552,-97.51803,mediana de 45 pozos; extension ~10 km
+CAAN,19.22272,-92.07365,mediana de 45 pozos; extension ~11 km
+JAUJAL,26.61628,-99.30731,mediana de 45 pozos; extension ~11 km
+ALONDRA,25.92629,-99.25796,mediana de 45 pozos; extension ~20 km
+EK,19.50716,-92.00022,mediana de 44 pozos; extension ~5 km
+YAXCHE,18.51261,-93.28491,mediana de 43 pozos; extension ~10 km
+BALAM,19.48407,-91.9523,mediana de 43 pozos; extension ~21 km
+ENLACE,26.53117,-99.24047,mediana de 43 pozos; extension ~9 km
+PICADILLO,25.92144,-98.87331,mediana de 43 pozos; extension ~11 km
+QUESQUI,17.94542,-93.64783,mediana de 43 pozos; extension ~7 km
+FUNDADOR,25.89689,-98.51525,mediana de 42 pozos; extension ~6 km
+FRONTERIZO,25.86973,-98.83562,mediana de 42 pozos; extension ~7 km
+GEMINIS,26.25528,-98.99614,mediana de 41 pozos; extension ~15 km
+GIGANTE,26.60176,-99.35805,mediana de 41 pozos; extension ~17 km
+GUARICHO,17.92575,-93.77478,mediana de 41 pozos; extension ~10 km
+CAUCHY,18.14923,-95.74476,mediana de 41 pozos; extension ~28 km
+TINTAL,18.19679,-93.14362,mediana de 40 pozos; extension ~4 km
+PALO BLANCO,20.8818,-97.79501,mediana de 40 pozos; extension ~14 km
+CABEZA,25.47041,-98.76639,mediana de 39 pozos; extension ~14 km
+TEPETATE NORTE CHINAMPA,21.41569,-97.66746,mediana de 39 pozos; extension ~9 km
+AGUACATE,21.32716,-97.57937,mediana de 39 pozos; extension ~9 km
+ANGOSTURA,18.64408,-96.32682,mediana de 39 pozos; extension ~6 km
+PAREDON,17.92631,-93.39579,mediana de 38 pozos; extension ~11 km
+TEOTLECO,17.92971,-93.25644,mediana de 37 pozos; extension ~11 km
+GIRALDAS,17.66436,-93.3711,mediana de 37 pozos; extension ~9 km
+SAN DIEGO CHICONCILLO,21.4628,-97.6486,mediana de 37 pozos; extension ~13 km
+MIAHUAPAN,20.62414,-97.62732,mediana de 37 pozos; extension ~22 km
+SINAN,18.95082,-92.65071,mediana de 36 pozos; extension ~14 km
+CAUDALOSO,25.96798,-98.53099,mediana de 36 pozos; extension ~5 km
+CALABAZA,25.77088,-99.27984,mediana de 36 pozos; extension ~10 km
+EZEQUIEL ORDONEZ,20.54451,-97.26149,mediana de 36 pozos; extension ~8 km
+BAGRE,20.96396,-97.04682,mediana de 35 pozos; extension ~11 km
+CHUC,19.17359,-92.28718,mediana de 35 pozos; extension ~4 km
+CHAPUL,25.56651,-98.25515,mediana de 35 pozos; extension ~8 km
+USUMACINTA,18.23464,-92.36709,mediana de 35 pozos; extension ~9 km
+EDEN JOLOTE,18.02117,-93.30787,mediana de 35 pozos; extension ~12 km
+SIHIL,19.42114,-92.07613,mediana de 34 pozos; extension ~8 km
+POL,19.23737,-92.2779,mediana de 34 pozos; extension ~5 km
+CARLOS,25.97315,-98.91091,mediana de 34 pozos; extension ~11 km
+XANAB,18.56008,-93.39445,mediana de 33 pozos; extension ~11 km
+SULTAN,26.0436,-98.49707,mediana de 33 pozos; extension ~7 km
+PRIMAVERA,25.53144,-98.94081,mediana de 33 pozos; extension ~9 km
+MUSPAC,17.48026,-93.36662,mediana de 33 pozos; extension ~5 km
+GASIFERO,17.79235,-95.3464,mediana de 33 pozos; extension ~4 km
+PASCUALITO,25.88821,-98.35486,mediana de 32 pozos; extension ~10 km
+ZACAMIXTLE,21.24034,-97.72515,mediana de 32 pozos; extension ~7 km
+TARATUNICH,19.39794,-92.27971,mediana de 31 pozos; extension ~7 km
+SUNUAPA,17.57008,-93.24649,mediana de 31 pozos; extension ~14 km
+NISPERO,17.90544,-93.13528,mediana de 30 pozos; extension ~6 km
+COPITE,18.9416,-96.41479,mediana de 30 pozos; extension ~9 km
+PERDIZ,18.5163,-96.14661,mediana de 29 pozos; extension ~8 km
+ACUATEMPA,20.64315,-97.39071,mediana de 28 pozos; extension ~3 km
+OCOTEPEC,20.70885,-97.4699,mediana de 28 pozos; extension ~4 km
+COPAL,20.66679,-97.38324,mediana de 28 pozos; extension ~5 km
+PAPAN,18.63308,-96.21619,mediana de 28 pozos; extension ~9 km
+SAN BERNARDO,25.66147,-98.91896,mediana de 27 pozos; extension ~8 km
+MURO,20.84715,-97.44475,mediana de 27 pozos; extension ~19 km
+GALLO,20.96883,-97.78778,mediana de 27 pozos; extension ~7 km
+POTRERO DEL LLANO HORCONES,21.06479,-97.73212,mediana de 27 pozos; extension ~8 km
+HORCON,20.79162,-97.54162,mediana de 26 pozos; extension ~12 km
+PAMORANA,25.97572,-98.72666,mediana de 25 pozos; extension ~9 km
+MONCLOVA,27.04004,-101.33286,mediana de 25 pozos; extension ~16 km
+AZOR,26.52298,-99.23079,mediana de 25 pozos; extension ~5 km
+ITA,25.35016,-98.43533,mediana de 25 pozos; extension ~4 km
+PANAL,18.02205,-94.09583,mediana de 25 pozos; extension ~5 km
+AMATITLAN,20.8569,-97.95191,mediana de 25 pozos; extension ~7 km
+CHICHIMANTLA,20.69131,-97.45144,mediana de 25 pozos; extension ~3 km
+BEDEL,17.82594,-95.43705,mediana de 25 pozos; extension ~4 km
+TIZON,18.55723,-92.7197,mediana de 24 pozos; extension ~6 km
+BRICOL,18.24292,-93.33828,mediana de 24 pozos; extension ~7 km
+TERRA,18.24069,-92.99203,mediana de 24 pozos; extension ~6 km
+NOHOCH,19.36151,-92.00457,mediana de 23 pozos; extension ~3 km
+MAY,18.71376,-92.59458,mediana de 23 pozos; extension ~4 km
+ECATL,25.30457,-98.41468,mediana de 23 pozos; extension ~3 km
+SHISHITO,17.78523,-92.68556,mediana de 23 pozos; extension ~1 km
+ARROYO PRIETO,17.92404,-93.75947,mediana de 23 pozos; extension ~4 km
+BRILLANTE,18.1559,-94.27211,mediana de 23 pozos; extension ~3 km
+CATEDRAL,17.43446,-93.33986,mediana de 23 pozos; extension ~2 km
+AYOCOTE,17.88502,-93.81555,mediana de 23 pozos; extension ~11 km
+MORA,18.08905,-93.42797,mediana de 23 pozos; extension ~9 km
+COBO,18.05305,-92.32218,mediana de 23 pozos; extension ~8 km
+MAREOGRAFO,25.57779,-99.16717,mediana de 22 pozos; extension ~11 km
+RUSCO,25.25151,-98.40835,mediana de 22 pozos; extension ~4 km
+TIGRILLO,25.73191,-98.64737,mediana de 22 pozos; extension ~5 km
+ANTIGUO,26.67689,-99.24226,mediana de 22 pozos; extension ~5 km
+SARLAT,17.79058,-92.50171,mediana de 22 pozos; extension ~2 km
+COSTERO,18.62717,-92.50808,mediana de 22 pozos; extension ~3 km
+JUSPI,17.82787,-93.24416,mediana de 22 pozos; extension ~7 km
+NUEVO PROGRESO,20.58754,-97.49819,mediana de 22 pozos; extension ~2 km
+TEJADA,20.63574,-97.54663,mediana de 22 pozos; extension ~2 km
+IXACHI,18.53196,-96.123,mediana de 22 pozos; extension ~9 km
+ONEL,19.33621,-92.40016,mediana de 21 pozos; extension ~4 km
+KAB,18.80933,-92.70754,mediana de 21 pozos; extension ~9 km
+TSIMIN,18.72193,-92.68246,mediana de 21 pozos; extension ~6 km
+ZACATE,25.86166,-98.72865,mediana de 21 pozos; extension ~6 km
+OROZCO,25.65687,-98.57273,mediana de 21 pozos; extension ~4 km
+KRIPTON,26.03401,-98.48178,mediana de 21 pozos; extension ~3 km
+JACINTO,17.91334,-93.43984,mediana de 21 pozos; extension ~55 km
+EL TREINTA,17.83264,-95.49879,mediana de 21 pozos; extension ~4 km
+IXTAL,19.38529,-92.34675,mediana de 20 pozos; extension ~6 km
+PIPILA,25.36314,-98.44885,mediana de 20 pozos; extension ~3 km
+BAYO,25.71854,-98.69043,mediana de 20 pozos; extension ~2 km
+YAGUAL,18.22262,-93.44189,mediana de 20 pozos; extension ~8 km
+MESA CERRADA,20.67247,-97.43366,mediana de 20 pozos; extension ~3 km
+BOLONTIKU,18.88812,-92.57291,mediana de 19 pozos; extension ~5 km
+BUENA SUERTE,27.11983,-101.51549,mediana de 19 pozos; extension ~13 km
+PRESA,26.27183,-99.10488,mediana de 19 pozos; extension ~6 km
+ZAPOTALILLO,20.64305,-97.56832,mediana de 19 pozos; extension ~6 km
+POKCHE,18.49455,-93.45849,mediana de 18 pozos; extension ~13 km
+IXTOC,19.40662,-92.21187,mediana de 18 pozos; extension ~7 km
+MADREFIL,18.16296,-93.31935,mediana de 18 pozos; extension ~7 km
+FENIX,17.7746,-93.42195,mediana de 18 pozos; extension ~4 km
+CHAC,19.37973,-91.96676,mediana de 17 pozos; extension ~5 km
+HOKCHI,18.63051,-93.35644,mediana de 17 pozos; extension ~3 km
+UECH,19.10704,-92.52573,mediana de 17 pozos; extension ~3 km
+EMU,26.51899,-99.33566,mediana de 17 pozos; extension ~7 km
+MULACH,18.48787,-93.34462,mediana de 16 pozos; extension ~5 km
+KUIL,19.03433,-92.21877,mediana de 16 pozos; extension ~4 km
+XUX,18.68429,-92.74479,mediana de 16 pozos; extension ~2 km
+CALIBRADOR,25.51121,-99.16622,mediana de 16 pozos; extension ~4 km
+ARABE,26.02943,-98.51828,mediana de 16 pozos; extension ~4 km
+TEPETITAN,17.80364,-92.28844,mediana de 16 pozos; extension ~9 km
+MARSOPA,21.06134,-97.05974,mediana de 15 pozos; extension ~3 km
+GALIA,26.06659,-98.51869,mediana de 15 pozos; extension ~4 km
+GENERAL,26.65351,-99.41891,mediana de 15 pozos; extension ~4 km
+CAFETO,17.90163,-92.55629,mediana de 15 pozos; extension ~2 km
+RIO NUEVO,17.83154,-93.09993,mediana de 15 pozos; extension ~3 km
+HOMOL,19.04055,-92.24673,mediana de 14 pozos; extension ~5 km
+RICOS,25.99701,-97.97956,mediana de 14 pozos; extension ~6 km
+RENO,26.83068,-99.43261,mediana de 14 pozos; extension ~5 km
+BONANZA,26.43285,-99.25296,mediana de 14 pozos; extension ~2 km
+PARETO,18.30748,-93.30569,mediana de 14 pozos; extension ~6 km
+IRIS,17.70524,-93.40704,mediana de 14 pozos; extension ~8 km
+CARMITO,17.65078,-93.08895,mediana de 14 pozos; extension ~3 km
+CACAHUATENGO,20.83338,-97.86557,mediana de 14 pozos; extension ~8 km
+AMOCA,18.33946,-93.89379,mediana de 13 pozos; extension ~4 km
+MIZTON,18.39977,-93.7942,mediana de 13 pozos; extension ~2 km
+BACAB,19.56937,-92.09081,mediana de 13 pozos; extension ~7 km
+BATAB,19.29768,-92.31756,mediana de 13 pozos; extension ~1 km
+FORASTERO,27.30214,-101.44632,mediana de 13 pozos; extension ~5 km
+DRAGON,26.08472,-98.5573,mediana de 13 pozos; extension ~3 km
+HUATEMPO,26.45675,-99.2382,mediana de 13 pozos; extension ~6 km
+CIBIX,18.22898,-93.08614,mediana de 13 pozos; extension ~7 km
+TOKAL,18.22375,-93.22139,mediana de 13 pozos; extension ~2 km
+CHINCHORRO,18.19906,-93.39878,mediana de 13 pozos; extension ~3 km
+COMOAPA,17.69984,-93.28637,mediana de 13 pozos; extension ~5 km
+RIACHUELO,20.27488,-97.15573,mediana de 13 pozos; extension ~1 km
+CALI,26.12105,-98.63728,mediana de 12 pozos; extension ~4 km
+ROSAL,26.76862,-99.38902,mediana de 12 pozos; extension ~6 km
+FOSIL,25.34864,-98.41075,mediana de 12 pozos; extension ~6 km
+SINI,18.3849,-92.87343,mediana de 12 pozos; extension ~1 km
+GAUCHO,17.56589,-93.15771,mediana de 12 pozos; extension ~7 km
+MOZUTLA,20.61922,-97.37677,mediana de 12 pozos; extension ~1 km
+GRANADITAS,25.32764,-98.44825,mediana de 11 pozos; extension ~2 km
+MERCED,27.5877,-101.17805,mediana de 11 pozos; extension ~7 km
+HIDALGO,27.89301,-99.97244,mediana de 11 pozos; extension ~17 km
+GARUFA,25.91267,-98.54254,mediana de 11 pozos; extension ~1 km
+TUPILCO PROFUNDO,18.35197,-93.36751,mediana de 11 pozos; extension ~4 km
+PLATANAL,17.93919,-93.06004,mediana de 11 pozos; extension ~6 km
+AYAPA,18.19979,-93.11854,mediana de 11 pozos; extension ~2 km
+BITZAL,18.0132,-92.34058,mediana de 11 pozos; extension ~5 km
+TENEXCUILA,21.17666,-97.92878,mediana de 11 pozos; extension ~25 km
+TLACOLULA,21.08501,-97.98549,mediana de 11 pozos; extension ~11 km
+GRAN MORELOS,20.28147,-97.07319,mediana de 11 pozos; extension ~3 km
+TECA,18.44392,-94.13649,mediana de 10 pozos; extension ~5 km
+EXPLORADOR,26.71311,-99.2743,mediana de 10 pozos; extension ~4 km
+PALEOARCOS,26.55337,-99.18891,mediana de 10 pozos; extension ~1 km
+TRAPICHE,26.0581,-98.64781,mediana de 10 pozos; extension ~4 km
+ECLIPSE,26.1257,-98.442,mediana de 10 pozos; extension ~2 km
+XICALANGO,18.611,-91.97094,mediana de 10 pozos; extension ~9 km
+CANTEMOC,18.13276,-92.29972,mediana de 10 pozos; extension ~3 km
+ITTA,18.61217,-93.29555,mediana de 9 pozos; extension ~1 km
+TLACAME,18.47977,-93.45765,mediana de 9 pozos; extension ~2 km
+CARPA,21.22934,-97.1149,mediana de 9 pozos; extension ~2 km
+VIGILANTE,26.66942,-99.44951,mediana de 9 pozos; extension ~3 km
+MUREX,26.90124,-99.35416,mediana de 9 pozos; extension ~7 km
+ESCARBADO,18.36297,-92.90639,mediana de 9 pozos; extension ~7 km
+SAN PABLO,18.35881,-96.14064,mediana de 9 pozos; extension ~412 km
+LAKACH,19.04321,-95.26284,mediana de 8 pozos; extension ~6 km
+TLAMATINI,18.48737,-93.50197,mediana de 8 pozos; extension ~2 km
+TAKIN,19.29494,-91.95854,mediana de 8 pozos; extension ~128 km
+OCH,19.19639,-92.47852,mediana de 8 pozos; extension ~4 km
+TERREGAL,26.00504,-98.33837,mediana de 8 pozos; extension ~3 km
+CARAVANA,26.79316,-99.4494,mediana de 8 pozos; extension ~4 km
+OVEJA,27.2475,-99.4517,mediana de 8 pozos; extension ~2 km
+ARROYO ZANAPA,17.81742,-93.29519,mediana de 8 pozos; extension ~4 km
+NELASH,17.89312,-93.91025,mediana de 8 pozos; extension ~6 km
+TEPEYIL,17.95115,-93.48997,mediana de 8 pozos; extension ~6 km
+TIHUATLAN,20.76077,-97.52392,mediana de 8 pozos; extension ~3 km
+PITAL Y MOZUTLA,20.60094,-97.41892,mediana de 8 pozos; extension ~4 km
+VARA ALTA,21.0423,-97.69483,mediana de 8 pozos; extension ~4 km
+KAX,19.13415,-92.4876,mediana de 7 pozos; extension ~2 km
+KOBAN,18.57301,-92.77067,mediana de 7 pozos; extension ~2 km
+KAMBESAH,19.40697,-92.15207,mediana de 7 pozos; extension ~1 km
+BARUNDA,25.81505,-98.66506,mediana de 7 pozos; extension ~3 km
+PRESIDENTE ALEMAN PR,20.41782,-97.35467,mediana de 7 pozos; extension ~1 km
+SABANA GRANDE,21.20148,-98.08054,mediana de 7 pozos; extension ~19 km
+RINCON PACHECO,18.34622,-96.11514,mediana de 7 pozos; extension ~3 km
+RABEL,18.16826,-95.57218,mediana de 7 pozos; extension ~2 km
+TEEKIT PROFUNDO,18.61388,-93.07054,mediana de 6 pozos; extension ~0 km
+XIKIN,18.65698,-93.33667,mediana de 6 pozos; extension ~3 km
+OCTLI,18.31338,-94.26342,mediana de 6 pozos; extension ~1 km
+MANIK,19.42796,-92.3332,mediana de 6 pozos; extension ~4 km
+PATRIOTA,25.94212,-98.50651,mediana de 6 pozos; extension ~2 km
+CHALUPA,25.74605,-98.56446,mediana de 6 pozos; extension ~2 km
+PACHE,18.09448,-93.23068,mediana de 6 pozos; extension ~5 km
+HUEHUETEPEC,20.7339,-97.88154,mediana de 6 pozos; extension ~1 km
+MAXIMINO,25.84901,-94.90419,mediana de 5 pozos; extension ~28 km
+KANAAB,19.34927,-92.21952,mediana de 5 pozos; extension ~2 km
+TETL,18.45733,-93.66499,mediana de 5 pozos; extension ~3 km
+ICHALKIL,19.04228,-92.44406,mediana de 5 pozos; extension ~5 km
+UCHBAL,18.66434,-93.31896,mediana de 5 pozos; extension ~3 km
+MISON,18.88803,-92.42218,mediana de 5 pozos; extension ~4 km
+CUCANA,25.73267,-98.71848,mediana de 5 pozos; extension ~4 km
+INTEGRAL,26.15773,-98.60353,mediana de 5 pozos; extension ~3 km
+AZUCAR,26.18103,-98.95514,mediana de 5 pozos; extension ~5 km
+BARRILETE,25.81007,-99.20816,mediana de 5 pozos; extension ~2 km
+FITON,25.30846,-98.46254,mediana de 5 pozos; extension ~3 km
+DULCE,25.80625,-98.69956,mediana de 5 pozos; extension ~3 km
+CARLOTA,26.00462,-98.91561,mediana de 5 pozos; extension ~3 km
+BOCAXA,26.08886,-98.72687,mediana de 5 pozos; extension ~2 km
+AXON,26.44869,-99.30571,mediana de 5 pozos; extension ~1 km
+CHIPILIN,18.09774,-93.37056,mediana de 5 pozos; extension ~3 km
+VICHE,17.99008,-92.40085,mediana de 5 pozos; extension ~0 km
+AHUATEPEC,20.92661,-97.87094,mediana de 5 pozos; extension ~8 km
+PASTORIA,21.05365,-98.05538,mediana de 5 pozos; extension ~7 km
+TRION,25.75828,-95.37987,mediana de 4 pozos; extension ~7 km
+MANIK NW,19.42805,-92.33327,mediana de 4 pozos; extension ~1 km
+ETKAL,19.05408,-92.15356,mediana de 4 pozos; extension ~5 km
+ESAH,19.26461,-92.43663,mediana de 4 pozos; extension ~0 km
+SUUK,18.71084,-93.37562,mediana de 4 pozos; extension ~1 km
+CHEEK,19.12235,-92.24297,mediana de 4 pozos; extension ~0 km
+TEKEL,19.67717,-92.35026,mediana de 4 pozos; extension ~4 km
+KAYAB,19.72012,-92.43879,mediana de 4 pozos; extension ~10 km
+LUM,19.57682,-92.04735,mediana de 4 pozos; extension ~0 km
+AYIN,19.14561,-92.93232,mediana de 4 pozos; extension ~4 km
+CITAM,18.86912,-92.75418,mediana de 4 pozos; extension ~2 km
+FORCADO,26.05071,-98.72149,mediana de 4 pozos; extension ~3 km
+LLANO BLANCO,25.98256,-98.8603,mediana de 4 pozos; extension ~2 km
+ANONA,25.93181,-98.39419,mediana de 4 pozos; extension ~3 km
+HABANO,28.02966,-100.0355,mediana de 4 pozos; extension ~4 km
+RACEMOSA,18.2301,-92.87709,mediana de 4 pozos; extension ~5 km
+VALERIANA,18.14002,-92.82587,mediana de 4 pozos; extension ~0 km
+MANGAR,18.27261,-92.18516,mediana de 4 pozos; extension ~3 km
+ALMENDRO,18.22544,-92.25527,mediana de 4 pozos; extension ~1 km
+TIUMUT,17.91355,-93.88765,mediana de 4 pozos; extension ~0 km
+MIXTAN,17.81126,-95.39179,mediana de 4 pozos; extension ~0 km
+OBERTURA,18.62124,-96.15765,mediana de 4 pozos; extension ~0 km
+NOBILIS,25.72341,-94.95236,mediana de 3 pozos; extension ~9 km
+POKOCH,19.17239,-92.42935,mediana de 3 pozos; extension ~1 km
+CAHUA,18.30409,-94.08913,mediana de 3 pozos; extension ~1 km
+TECOALLI,18.45446,-93.68776,mediana de 3 pozos; extension ~3 km
+ZAMA,18.85928,-93.53385,mediana de 3 pozos; extension ~4 km
+CAMATL,18.30407,-94.08914,mediana de 3 pozos; extension ~2 km
+ALUX,19.04782,-92.71029,mediana de 3 pozos; extension ~0 km
+TSON,19.67953,-92.25198,mediana de 3 pozos; extension ~3 km
+KIX,18.84538,-92.42028,mediana de 3 pozos; extension ~0 km
+TEPOZAN,26.0046,-98.66575,mediana de 3 pozos; extension ~0 km
+PATLACHE,26.15543,-98.4466,mediana de 3 pozos; extension ~1 km
+VACAS,28.82763,-100.74698,mediana de 3 pozos; extension ~3 km
+BRAGADO,25.6588,-98.64682,mediana de 3 pozos; extension ~1 km
+GRANDE,26.47141,-99.34785,mediana de 3 pozos; extension ~0 km
+NUEVOS LIRIOS,18.38062,-92.36737,mediana de 3 pozos; extension ~2 km
+TROMPO,18.39971,-92.07538,mediana de 3 pozos; extension ~2 km
+ALAMEDA,18.21322,-93.19287,mediana de 3 pozos; extension ~1 km
+RASHA,18.59845,-92.57268,mediana de 3 pozos; extension ~0 km
+PALANGRE,18.19402,-93.36962,mediana de 3 pozos; extension ~3 km
+BOCA DEL TORO,18.34754,-92.35139,mediana de 3 pozos; extension ~3 km
+SITIO,20.95959,-98.0316,mediana de 3 pozos; extension ~6 km
+ANGUILAS,18.34309,-95.5486,mediana de 3 pozos; extension ~12 km
+DOCTUS,25.37891,-95.52033,mediana de 2 pozos; extension ~2 km
+XOLOTL,18.51231,-93.37628,mediana de 2 pozos; extension ~2 km
+TLAKATI,18.65551,-93.3518,mediana de 2 pozos; extension ~3 km
+TENTOK,18.74021,-93.11999,mediana de 2 pozos; extension ~0 km
+AKAL NW,19.50753,-92.07244,mediana de 2 pozos; extension ~0 km
+NIQUITA,18.90216,-93.49565,mediana de 2 pozos; extension ~2 km
+CHAPABIL,19.64136,-92.48949,mediana de 2 pozos; extension ~0 km
+NAK,18.9095,-92.37007,mediana de 2 pozos; extension ~3 km
+POHP,19.66304,-92.24182,mediana de 2 pozos; extension ~4 km
+PIT,19.77183,-92.26427,mediana de 2 pozos; extension ~5 km
+TANGRAM,25.55242,-99.41892,mediana de 2 pozos; extension ~0 km
+JARAGUAY,25.60843,-98.26061,mediana de 2 pozos; extension ~4 km
+LEYENDA,25.72239,-98.54367,mediana de 2 pozos; extension ~2 km
+PAME,26.03871,-98.45854,mediana de 2 pozos; extension ~2 km
+ALGODONERO,25.55204,-98.71382,mediana de 2 pozos; extension ~3 km
+FILADELFIA,26.87121,-99.43593,mediana de 2 pozos; extension ~1 km
+RIBERENO,22.37768,-95.40282,mediana de 2 pozos; extension ~828 km
+LAGUNA ALEGRE,18.39338,-92.16639,mediana de 2 pozos; extension ~3 km
+ZARAGOZA,18.15652,-92.24972,mediana de 2 pozos; extension ~1 km
+CUPACHE,18.18528,-93.18969,mediana de 2 pozos; extension ~1 km
+COBRA,18.03307,-93.23734,mediana de 2 pozos; extension ~0 km
+NICAPA,17.44937,-93.35873,mediana de 2 pozos; extension ~2 km
+TUM,18.80202,-96.28027,mediana de 2 pozos; extension ~0 km
+PALMARO,17.8683,-95.53173,mediana de 2 pozos; extension ~0 km
+NAB,19.84173,-92.40781,mediana de 1 pozos; extension ~0 km
+ATOYATL,18.37464,-93.81572,mediana de 1 pozos; extension ~0 km
+TLALKIVAK,18.49916,-92.85608,mediana de 1 pozos; extension ~0 km
+MEJILLON,20.54854,-96.88042,mediana de 1 pozos; extension ~0 km
+BATSIL,19.10091,-92.68039,mediana de 1 pozos; extension ~0 km
+TEEKIT,18.60682,-93.07556,mediana de 1 pozos; extension ~0 km
+MACUIL,18.48125,-93.5875,mediana de 1 pozos; extension ~0 km
+MENE,19.6937,-92.20191,mediana de 1 pozos; extension ~0 km
+UTSIL,19.73695,-92.35287,mediana de 1 pozos; extension ~0 km
+KACH,19.4822,-92.75975,mediana de 1 pozos; extension ~0 km
+NUMAN,19.775,-92.38669,mediana de 1 pozos; extension ~0 km
+BAKSHA,19.80198,-92.32938,mediana de 1 pozos; extension ~0 km
+KASTELAN,19.47027,-92.83889,mediana de 1 pozos; extension ~0 km
+WAYIL,19.05308,-92.31095,mediana de 1 pozos; extension ~0 km
+AKPUL,18.99507,-92.72192,mediana de 1 pozos; extension ~0 km
+TOLOC,19.27029,-92.3864,mediana de 1 pozos; extension ~0 km
+MAKECH,19.20574,-92.8318,mediana de 1 pozos; extension ~0 km
+CHE,19.00411,-92.18882,mediana de 1 pozos; extension ~0 km
+ALAK,19.45291,-92.79001,mediana de 1 pozos; extension ~0 km
+KAY,19.08626,-92.09848,mediana de 1 pozos; extension ~0 km
+MEN,18.7251,-92.53789,mediana de 1 pozos; extension ~0 km
+JABALINA,25.94489,-98.51796,mediana de 1 pozos; extension ~0 km
+CATARRIN,25.72405,-98.67598,mediana de 1 pozos; extension ~0 km
+CASTA,25.99094,-98.57351,mediana de 1 pozos; extension ~0 km
+ARTIMON,25.83976,-98.68647,mediana de 1 pozos; extension ~0 km
+ZORRO,28.74152,-100.51937,mediana de 1 pozos; extension ~0 km
+NUMERADOR,25.71193,-98.68501,mediana de 1 pozos; extension ~0 km
+TALUD,25.89992,-99.14423,mediana de 1 pozos; extension ~0 km
+ORGANDI,25.72908,-98.14064,mediana de 1 pozos; extension ~0 km
+AMBOS,26.19418,-98.9076,mediana de 1 pozos; extension ~0 km
+PRIMO,26.38219,-99.56647,mediana de 1 pozos; extension ~0 km
+MANDARIN,26.00619,-98.63981,mediana de 1 pozos; extension ~0 km
+CHUCLA,24.97134,-98.65356,mediana de 1 pozos; extension ~0 km
+CEFIRO,24.99805,-98.78221,mediana de 1 pozos; extension ~0 km
+EMERGENTE,27.86199,-99.92633,mediana de 1 pozos; extension ~0 km
+ACTUL,18.02317,-94.22191,mediana de 1 pozos; extension ~0 km
+CHOCOL,18.36316,-93.26765,mediana de 1 pozos; extension ~0 km
+CHINTUL,17.4433,-93.41466,mediana de 1 pozos; extension ~0 km
+CENTURION,20.64882,-97.58943,mediana de 1 pozos; extension ~0 km

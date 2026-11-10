@@ -71,7 +71,7 @@ def clase_estado(txt):
     t = sin_acentos(txt).lower()
     if not t.strip():
         return "Sin dato"
-    if re.search(r"inactiv|no product|cerrad|taponad|abandon|suspend|improduct|seco|sin produc|en espera|desmantel", t):
+    if re.search(r"inactiv|no product|cerrad|cierre|tapon|abandon|suspend|improduct|seco|sin produc|en espera|desmantel", t):
         return "Inactivo"
     if re.search(r"product|activ|operand|inyector|fluyente|bombeo|en operac", t):
         return "Activo"
