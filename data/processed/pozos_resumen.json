@@ -3,9 +3,9 @@
   "campos_con_pozos": 451,
   "campos_total": 477,
   "por_estado": {
-    "Inactivo": 25293,
+    "Inactivo": 27223,
     "Activo": 6886,
-    "Sin dato": 1953
+    "Sin dato": 23
   },
   "estados_texto_original": {
     "INACTIVO": 15054,
