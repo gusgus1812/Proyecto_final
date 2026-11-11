@@ -189,7 +189,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <label>Coordenadas de campos (CSV <code>nombre,lat,lon</code>) <input type="file" id="fcamp" accept=".csv"></label>
     <label>Pozos (CSV <code>pozo,lat,lon,campo</code>) <input type="file" id="fpozo" accept=".csv"></label>
     <button class="btn" id="clrmap">Borrar mis archivos cargados</button>
-    <span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
+    <label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="chkpol" checked> Superficies</label><span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
   </div>
   <div id="map" role="application" aria-label="Mapa de campos"></div>
   <div id="mapfall" class="note" hidden>No se pudo cargar la librería del mapa (Leaflet). Necesitas conexión a internet para ver el mapa base.</div>
@@ -226,6 +226,7 @@ const DATA = /*__DATA__*/[];
 const RESUMEN = /*__RESUMEN__*/{};
 const COORDS_INI = /*__COORDS__*/[];
 const POZOS_CSV = /*__POZOS__*/"";
+const POLIGONOS = /*__POLIGONOS__*/null;
 
 /* ---------- utilidades ---------- */
 const $ = (s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -560,7 +561,7 @@ $('#gl').innerHTML=GLOS.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></d
 /* ---------- mapa ---------- */
 // campos que NO se dibujan en el mapa (coordenadas dudosas en la fuente); siguen apareciendo en el resto del dashboard
 const MAPA_EXCLUIR=new Set(['RIBERENO']);
-let map=null,layerC=null,layerP=null,lastFit=null;
+let map=null,layerC=null,layerP=null,layerS=null,lastFit=null;
 function loadStore(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
 function saveStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let coords=loadStore('mc_coords',null)||COORDS_INI;
@@ -699,19 +700,62 @@ function loadLeaflet(cb){
   const l=document.createElement('link');l.rel='stylesheet';l.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';document.head.appendChild(l);
   const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';s.onload=()=>cb(true);s.onerror=()=>cb(false);document.head.appendChild(s);
 }
+/* Superficies aproximadas (si no hay poligonos oficiales): envolvente convexa de los pozos del campo, o un circulo
+   con el area de superficie_km2 cuando hay pocos pozos o la envolvente es mucho menor que la superficie. */
+function derivarSuperficies(){
+  const out=[],KM=111.32;
+  const circulo=(lat,lon,km2)=>{const r=Math.sqrt(km2/Math.PI)/KM,c=Math.cos(lat*Math.PI/180),a=[];for(let i=0;i<=32;i++){const t=i/32*2*Math.PI;a.push([lon+r*Math.cos(t)/c,lat+r*Math.sin(t)])}return a};
+  const hull=P=>{P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(P.length<3)return P;const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+    const lo=[];for(const p of P){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}
+    const up=[];for(const p of P.slice().reverse()){while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}
+    lo.pop();up.pop();return lo.concat(up)};
+  const area=(H,lat)=>{let a=0;for(let i=0;i<H.length;i++){const p=H[i],q=H[(i+1)%H.length];a+=p[0]*q[1]-q[0]*p[1]}return Math.abs(a)/2*KM*KM*Math.cos(lat*Math.PI/180)};
+  DATA.forEach(d=>{if(MAPA_EXCLUIR.has(d.nombre))return;
+    let ws=wellsOf(d.nombre).filter(w=>w.lat!=null&&w.lon!=null),lat,lon,ring=null,how='';
+    const sup=d.superficie_km2>0?d.superficie_km2:null;
+    if(ws.length){lat=med(ws.map(w=>w.lat));lon=med(ws.map(w=>w.lon));
+      if(ws.length>=8){const dist=w=>Math.hypot((w.lat-lat),(w.lon-lon)*Math.cos(lat*Math.PI/180)),m=med(ws.map(dist));ws=ws.filter(w=>dist(w)<=Math.max(3*m,0.05))}
+      if(ws.length>=3){const H=hull(ws.map(w=>[w.lon,w.lat]));if(H.length>=3&&(!sup||area(H,lat)>=sup*.5)){ring=H.concat([H[0]]);how='envolvente de '+ws.length+' pozos'}}
+    }else{const c=coords.find(c=>(c.nombre||'').toUpperCase()===d.nombre);if(c){lat=parseFloat(c.lat);lon=parseFloat(c.lon)}}
+    if(!ring&&lat!=null&&!isNaN(lat)&&sup){ring=circulo(lat,lon,sup);how='circulo con su superficie'}
+    if(ring)out.push({type:'Feature',properties:{nombre:d.nombre,aprox:how},geometry:{type:'Polygon',coordinates:[ring]}})});
+  return out;
+}
+function fichaCampo(d,pr){
+  const f=(v,dd)=>v==null||v===''?'':nf(v,dd);
+  const filas=[['NOMBRE',esc(d.nombre)],['SUPERFICIE (KM2)',f(d.superficie_km2??pr.superficie_km2,2)],['UBICACIÓN',esc(d.ubicacion)],['COMENTARIOS',esc(d.comentario)],
+   ['PETRÓLEO CRUDO EQUIVALENTE 1P (MMBPCE)',f(d.pce_1p,2)],['CRUDO 1P (MMB)',f(d.crudo_1p,2)],['GAS NATURAL 1P (MMMPC)',f(d.gas_1p,2)],['CONDENSADO 1P (MMB)',f(d.cond_1p,2)],
+   ['PETRÓLEO CRUDO EQUIVALENTE 2P (MMBPCE)',f(d.pce_2p,2)],['CRUDO 2P (MMB)',f(d.crudo_2p,2)],['GAS NATURAL 2P (MMMPC)',f(d.gas_2p,2)],['CONDENSADO 2P (MMB)',f(d.cond_2p,2)],
+   ['PETRÓLEO CRUDO EQUIVALENTE 3P (MMBPCE)',f(d.pce_3p,2)],['CRUDO 3P (MMB)',f(d.crudo_3p,2)],['GAS NATURAL 3P (MMMPC)',f(d.gas_3p,2)],['CONDENSADO 3P (MMB)',f(d.cond_3p,2)],
+   ['POZOS EN EL CAMPO',String(wellsOf(d.nombre).length)]];
+  return `<div style="max-height:260px;overflow:auto;font-size:12px"><h3 style="margin:0 0 6px">${esc(d.nombre)}</h3><table style="border-collapse:collapse;width:100%">`+
+   filas.map(([k,v])=>`<tr><th style="text-align:left;border:1px solid #ccc;padding:3px 5px;background:#f3f3f3">${k}</th><td style="border:1px solid #ccc;padding:3px 5px">${v}</td></tr>`).join('')+
+   `</table>${pr.aprox?'<p style="margin:6px 0 0;color:#666">Superficie aproximada ('+esc(pr.aprox)+'), no es el contorno oficial.</p>':''}</div><p style="margin:8px 0 0"><button class="btn" data-sel>Ver pozos del campo</button></p>`;
+}
 function renderMap(){
   loadLeaflet(ok=>{
     $('#mapfall').hidden=ok;if(!ok)return;
-    if(!map){map=L.map('map',{keyboard:true,preferCanvas:true}).setView([22.5,-96],5);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,attribution:'© OpenStreetMap'}).addTo(map);layerC=L.layerGroup().addTo(map);layerP=L.layerGroup().addTo(map)}
+    if(!map){map=L.map('map',{keyboard:true,preferCanvas:true}).setView([22.5,-96],5);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,attribution:'© OpenStreetMap'}).addTo(map);layerS=L.layerGroup().addTo(map);layerC=L.layerGroup().addTo(map);layerP=L.layerGroup().addTo(map)}
     setTimeout(()=>map.invalidateSize(),50);
-    layerC.clearLayers();layerP.clearLayers();
+    layerC.clearLayers();layerP.clearLayers();layerS.clearLayers();
     const F=new Set(filtered().map(d=>d.nombre));let n=0;const col='pce_'+state.cat;
+    // superficies (poligonos) de los campos: clic abre la ficha del campo
+    const conPoli=new Set();let polyBounds=null;
+    if($('#chkpol').checked){
+      (POLIGONOS?POLIGONOS.features:derivarSuperficies()).forEach(ft=>{const d=byNk[nk(ft.properties.nombre)];if(!d||!F.has(d.nombre))return;conPoli.add(d.nombre);
+        const sel=d.nombre===state.sel;
+        const g=L.geoJSON(ft,{style:{color:sel?'#000':'#c2409b',weight:sel?3:1.2,fillColor:'#e66fc0',fillOpacity:sel?.5:.32}}).addTo(layerS);
+        g.bindTooltip(`${d.nombre} · ${nf0(d[col])} MMBPCE ${state.cat.toUpperCase()}${ft.properties.aprox?' · superficie aproximada':''}`,{sticky:true});
+        g.bindPopup(fichaCampo(d,ft.properties),{maxWidth:360});
+        g.on('popupopen',e=>{const el=e.popup.getElement();const b=el&&el.querySelector('[data-sel]');if(b)b.onclick=()=>{map.closePopup();selectField(d.nombre)}});
+        if(sel)polyBounds=g.getBounds()});
+    }
     // ubicación de cada campo: mediana de las coordenadas de sus pozos; si no hay pozos, las coordenadas referenciales
     const der=[];DATA.forEach(d=>{if(!F.has(d.nombre))return;const ws=wellsOf(d.nombre).filter(w=>w.lat!=null&&w.lon!=null);
       if(ws.length)der.push({nombre:d.nombre,lat:med(ws.map(w=>w.lat)),lon:med(ws.map(w=>w.lon)),nota:'centro de '+ws.length+' pozos'})});
     const dn=new Set(der.map(c=>c.nombre));
     der.concat(coords.filter(c=>!dn.has((c.nombre||'').toUpperCase()))).forEach(c=>{const d=byName[(c.nombre||'').toUpperCase()];const lat=parseFloat(c.lat),lon=parseFloat(c.lon);
-      if(!d||isNaN(lat)||isNaN(lon)||!F.has(d.nombre)||MAPA_EXCLUIR.has(d.nombre))return;n++;
+      if(!d||isNaN(lat)||isNaN(lon)||!F.has(d.nombre)||MAPA_EXCLUIR.has(d.nombre)||conPoli.has(d.nombre))return;n++;
       const r=Math.max(5,Math.sqrt(d[col])*1.1);
       const m=L.circleMarker([lat,lon],{radius:Math.min(r,40),color:d.nombre===state.sel?'#000':'#fff',weight:2,fillColor:getComputedStyle(document.documentElement).getPropertyValue({Terrestre:'--terr',Marino:'--mar','Aguas someras':'--som'}[d.ubicacion]).trim(),fillOpacity:.75}).addTo(layerC);
       m.bindTooltip(`${d.nombre} · ${nf0(d[col])} MMBPCE ${state.cat.toUpperCase()}${c.nota?' · '+c.nota:''}`);
@@ -726,16 +770,16 @@ function renderMap(){
     wm.forEach(w=>{bnds.push([w.lat,w.lon]);
       L.circleMarker([w.lat,w.lon],{radius:state.sel?6:3,color:'#222',weight:1,fillColor:stc[w.cls],fillOpacity:.9}).addTo(layerP)
        .bindTooltip(`Pozo ${w.pozo} · ${w.campo} · ${w.estado||'sin estado'} (${w.cls})`)});
-    if(state.sel!==lastFit){lastFit=state.sel;if(state.sel&&bnds.length)map.fitBounds(bnds,{maxZoom:11,padding:[40,40]})}
+    if(state.sel!==lastFit){lastFit=state.sel;if(state.sel){if(polyBounds)map.fitBounds(polyBounds,{maxZoom:11,padding:[30,30]});else if(bnds.length)map.fitBounds(bnds,{maxZoom:11,padding:[40,40]})}}
     const pozos=wm;
-    $('#mapinfo').textContent=`${n} campos y ${pozos.length} pozos ubicados · ${F.size-n} campos filtrados sin coordenadas${big?` · hay ${nf0(wm0.length)} pozos: elige un campo (o filtra) para verlos`:''}`;
+    $('#mapinfo').textContent=`${conPoli.size?conPoli.size+' superficies · ':''}${n} campos (punto) y ${pozos.length} pozos ubicados · ${F.size-n} campos filtrados sin coordenadas${big?` · hay ${nf0(wm0.length)} pozos: elige un campo (o filtra) para verlos`:''}`;
   });
 }
 $('#fcamp').onchange=async e=>{const f=e.target.files[0];if(!f)return;coords=parseCsv(await f.text());saveStore('mc_coords',coords);renderMap()};
 $('#fpozo').onchange=e=>loadWellsFile(e.target.files[0]);
 $('#fpozo2').onchange=e=>loadWellsFile(e.target.files[0]);
 function clearLoaded(){coords=COORDS_INI;wellsRaw=POZOS_CSV?parseCsv(POZOS_CSV):[];try{localStorage.removeItem('mc_coords');localStorage.removeItem('mc_pozos')}catch(e){}indexWells();state.cmp=[];state.wst=null;state.wtx=null;renderQual();renderAll()}
-$('#clrmap').onclick=clearLoaded;$('#pzclr').onclick=clearLoaded;
+$('#chkpol').onchange=renderMap;$('#clrmap').onclick=clearLoaded;$('#pzclr').onclick=clearLoaded;
 
 /* ---------- pestañas ---------- */
 const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['glosario','Glosario'],['ayuda','Ayuda']];
