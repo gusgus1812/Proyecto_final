@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<!-- Autor: Emmanuel Vazquez Alfaro · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE. -->
+<meta name="author" content="Emmanuel Vázquez Alfaro">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reservas de Hidrocarburos</title>
 <meta name="description" content="Dashboard interactivo de reservas 1P, 2P y 3P de 477 campos de México (corte 01-01-2024).">
@@ -124,6 +126,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 .rep .mk{cursor:default}
 .rep ul{margin:4px 0;padding-left:20px}.rep li{margin:3px 0}
 .rep .q{break-inside:avoid;margin:6px 0}
+.rep .wmk{display:none}
 .rep .notes{white-space:pre-wrap;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;min-height:30px}
 .rep .legend{font-size:10.5px}
 #t-reporte textarea,#t-reporte input[type=text]{font:inherit;width:100%;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
@@ -136,6 +139,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
   body.pr main{padding:0;max-width:none}
   body.pr .rep{border:0;border-radius:0;padding:0;max-width:none}
   body.pr *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.pr .rep .wmk{display:block;position:fixed;left:0;right:0;top:46%;text-align:center;transform:rotate(-30deg);font-size:54px;font-weight:700;color:rgba(15,107,92,.07);letter-spacing:2px;pointer-events:none;z-index:0;white-space:nowrap}
 }
 </style>
 <!--__LEAFLET__-->
@@ -268,7 +272,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
   </ul></div>
 </section>
 </main>
-<footer>Proyecto de análisis de reservas · datos CNH/SENER · hecho con HTML, CSS y JavaScript sin dependencias (salvo el mapa base). Los datos de este dashboard son del archivo cargado; consulta la fuente oficial para decisiones.</footer>
+<footer>© 2026 <b id="autor-ft"></b> · Proyecto de análisis de reservas · datos CNH/SENER · hecho con HTML, CSS y JavaScript sin dependencias (salvo el mapa base). Los datos de este dashboard son del archivo cargado; consulta la fuente oficial para decisiones.</footer>
 <div class="sr" id="live" aria-live="polite"></div>
 
 <script>
@@ -277,6 +281,7 @@ const DATA = /*__DATA__*/[];
 const RESUMEN = /*__RESUMEN__*/{};
 const COORDS_INI = /*__COORDS__*/[];
 const POZOS_CSV = /*__POZOS__*/"";
+const AUTOR = 'Emmanuel Vázquez Alfaro', ANIO = 2026;
 const POLIGONOS = /*__POLIGONOS__*/null;
 const BASE_GEO = /*__BASE__*/null;
 
@@ -608,6 +613,7 @@ const GLOS=[
 ['Densidad de reserva','Reserva dividida entre superficie (MMBPCE por km²). Mide qué tan concentrada está.'],
 ['Certeza 1P/3P','Qué porcentaje de la reserva 3P ya está probada. Bajo = mucha incertidumbre.']
 ];
+$('#autor-ft').textContent=AUTOR;
 $('#gl').innerHTML=GLOS.map(([t,d])=>`<div><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join('');
 
 /* ---------- mapa ---------- */
@@ -971,7 +977,8 @@ function renderReport(){
   const sel=repSelHtml();repSelUi();
   el.innerHTML=`
   <h1>Reservas de hidrocarburos de México</h1>
-  <p class="mt">Reporte de análisis exploratorio · Generado el ${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}${team?` · Equipo: ${esc(team)}`:''}</p>
+  <p class="mt">Reporte de análisis exploratorio · Generado el ${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</p>
+  <p class="mt"><b>Autor:</b> ${esc(AUTOR)}${team?` · <b>Equipo:</b> ${esc(team)}`:''}</p>
   <p class="mt">${repFiltros(F)}</p>
   <h2>1. Datos</h2>
   <p><b>Fuente:</b> Comisión Nacional de Hidrocarburos (CNH) y Secretaría de Energía (SENER), archivo «Campos Reservas 01-01-2024» del mapa de hidrocarburos (mapa-hidrocarburos.energia.gob.mx). Contiene ${DATA.length} campos con reservas 1P, 2P y 3P de crudo, gas natural, condensado y petróleo crudo equivalente. El archivo original se conserva sin modificar; las columnas derivadas (probables, posibles, certeza, densidad, fluido dominante, tamaño) se calculan a partir de él.</p>
@@ -992,7 +999,9 @@ function renderReport(){
   ${sel?`<h2>7. Campo y pozos seleccionados</h2>${sel}`:''}
   <h2>${sel?8:7}. Conclusiones</h2><ul>${conc.map(x=>`<li>${x}</li>`).join('')}</ul>
   ${notes?`<h3>Comentarios del equipo</h3><div class="notes">${esc(notes)}</div>`:''}
-  <p class="mt" style="margin-top:16px">Las estimaciones de reservas son datos oficiales a la fecha de corte; este reporte solo las organiza y resume.</p>`;
+  <p class="mt" style="margin-top:16px">Las estimaciones de reservas son datos oficiales a la fecha de corte; este reporte solo las organiza y resume.</p>
+  <p class="mt">© ${ANIO} ${esc(AUTOR)} · Análisis y aplicación de autoría propia; datos públicos de la CNH y SENER. Prohibida su reproducción o entrega como trabajo propio sin autorización.</p>
+  <div class="wmk" aria-hidden="true">${esc(AUTOR)}</div>`;
 }
 function printReport(){
   renderReport();document.body.classList.add('pr');
