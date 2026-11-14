@@ -102,7 +102,43 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 #tcmp th:first-child,#tcmp td:first-child{text-align:left;font-weight:600}
 #tcmp .best{color:var(--accent);font-weight:700}
 #det .chip{display:inline-flex;align-items:center}
+/* ---------- reporte PDF ---------- */
+.rep{--bg:#f6f5f1;--panel:#fff;--ink:#1d2330;--mute:#5d6676;--line:#dcd9d0;--accent:#0f6b5c;--accent-ink:#fff;--terr:#2f855a;--mar:#2b6cb0;--som:#c98a0b;--p1:#0f6b5c;--p2:#3f9e8c;--p3:#a8d5cb;--aceite:#8b5a2b;--gas:#5aa7d6;--mixto:#9a9a72;--cond:#b0558a;--st-a:#2f9e6e;--st-i:#7b8494;--st-n:#d6a21c;
+  background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:24px 28px;max-width:920px;margin:0 auto;font-size:13px;line-height:1.5}
+.rep h1{font-size:23px;margin:0 0 2px;color:var(--accent)}
+.rep h2{font-size:15px;margin:20px 0 6px;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:2px;break-after:avoid}
+.rep h3{font-size:13px;margin:12px 0 3px;break-after:avoid}
+.rep p{margin:4px 0}.rep .mt{color:var(--mute);font-size:11.5px}
+.rep table{width:100%;font-size:11.5px;border:1px solid var(--line)}
+.rep th,.rep td{position:static;padding:3px 7px;white-space:normal;border-bottom:1px solid var(--line);text-align:right;background:none}
+.rep th:first-child,.rep td:first-child{text-align:left}
+.rep thead th{background:#e6f2ef;font-weight:700}
+.rep .rk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0}
+.rep .rk div{border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.rep .rk b{display:block;font-size:19px}.rep .rk span{font-size:10.5px;color:var(--mute);text-transform:uppercase}
+.rep .rg{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.rep figure{margin:0;break-inside:avoid;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.rep figure.w{grid-column:1/-1}
+.rep figcaption{font-weight:700;font-size:12px}.rep figcaption small{display:block;font-weight:400;color:var(--mute);font-size:10.5px}
+.rep svg{width:100%;height:auto;display:block;overflow:visible}
+.rep .mk{cursor:default}
+.rep ul{margin:4px 0;padding-left:20px}.rep li{margin:3px 0}
+.rep .q{break-inside:avoid;margin:6px 0}
+.rep .notes{white-space:pre-wrap;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;min-height:30px}
+.rep .legend{font-size:10.5px}
+#t-reporte textarea,#t-reporte input[type=text]{font:inherit;width:100%;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+@media print{
+  @page{size:A4;margin:12mm}
+  body.pr{background:#fff}
+  body.pr header.top,body.pr .bar,body.pr nav.tabs,body.pr .filters,body.pr .det,body.pr footer,body.pr .noprint,body.pr .sr{display:none!important}
+  body.pr section.tp{display:none!important}
+  body.pr #t-reporte{display:block!important}
+  body.pr main{padding:0;max-width:none}
+  body.pr .rep{border:0;border-radius:0;padding:0;max-width:none}
+  body.pr *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
+<!--__LEAFLET__-->
 </head>
 <body>
 <header class="top">
@@ -192,7 +228,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="chkpol" checked> Superficies</label><span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
   </div>
   <div id="map" role="application" aria-label="Mapa de campos"></div>
-  <div id="mapfall" class="note" hidden>No se pudo cargar la librería del mapa (Leaflet). Necesitas conexión a internet para ver el mapa base.</div>
+  <div id="mapfall" class="note" hidden>No se pudo cargar la librería del mapa (Leaflet). Para usar el mapa sin internet corre <code>python scripts/08_mapa_sin_internet.py</code> una vez (con internet) y luego <code>python scripts/02_build_web.py</code>.</div>
 </section>
 
 <section class="tp" id="t-calidad" role="tabpanel">
@@ -202,6 +238,21 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
   </div>
 </section>
 
+<section class="tp" id="t-reporte" role="tabpanel">
+  <div class="note noprint">Esta pestaña arma un <b>reporte con los filtros activos</b> (reserva, ubicación, búsqueda): datos, indicadores, estadísticas, gráficas, hallazgos, respuestas a las preguntas de análisis y conclusiones. Pulsa «Generar PDF» y, en la ventana de impresión, elige <b>Guardar como PDF</b> como destino.</div>
+  <div class="card noprint" style="margin-bottom:14px;display:grid;gap:10px">
+    <label>Integrantes del equipo <input type="text" id="rep-team" placeholder="Nombre 1, Nombre 2, Nombre 3"></label>
+    <label>Conclusiones y comentarios del equipo (se imprimen al final) <textarea id="rep-notes" rows="4"></textarea></label>
+    <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <label>Campo A (ficha o comparación) <input type="text" id="rep-fa" list="dl-campos" placeholder="Si lo dejas vacío usa el campo seleccionado"></label>
+      <label>Campo B (para comparar con A) <input type="text" id="rep-fb" list="dl-campos" placeholder="Opcional"></label>
+    </div>
+    <div><b style="font-size:13px">Pozos a comparar:</b> <span id="rep-wells"></span></div>
+    <div><button class="btn pri" id="rep-pdf">Generar PDF</button> <span style="color:var(--mute);font-size:12.5px">La vista previa de abajo es lo que saldrá en el PDF.</span></div>
+  </div>
+  <article class="rep" id="rep"></article>
+</section>
+
 <section class="tp" id="t-glosario" role="tabpanel">
   <div class="gl" id="gl"></div>
 </section>
@@ -209,7 +260,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 <section class="tp" id="t-ayuda" role="tabpanel">
   <div class="card"><h2>Atajos de teclado</h2>
   <ul class="hall">
-    <li><kbd>1</kbd>–<kbd>8</kbd> cambia de pestaña (o <kbd>←</kbd><kbd>→</kbd> sobre las pestañas).</li>
+    <li><kbd>1</kbd>–<kbd>9</kbd> cambia de pestaña (o <kbd>←</kbd><kbd>→</kbd> sobre las pestañas).</li>
     <li><kbd>P</kbd> cicla 1P → 2P → 3P. <kbd>U</kbd> cicla la ubicación (todas → terrestre → marino → aguas someras).</li>
     <li><kbd>/</kbd> enfoca el buscador. <kbd>Esc</kbd> limpia filtros y selección. <kbd>?</kbd> abre esta ayuda.</li>
     <li>En cualquier gráfica: <kbd>Tab</kbd> entra, flechas recorren, <kbd>Enter</kbd> selecciona o filtra.</li>
@@ -227,6 +278,7 @@ const RESUMEN = /*__RESUMEN__*/{};
 const COORDS_INI = /*__COORDS__*/[];
 const POZOS_CSV = /*__POZOS__*/"";
 const POLIGONOS = /*__POLIGONOS__*/null;
+const BASE_GEO = /*__BASE__*/null;
 
 /* ---------- utilidades ---------- */
 const $ = (s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -728,14 +780,14 @@ function fichaCampo(d,pr){
    ['PETRÓLEO CRUDO EQUIVALENTE 2P (MMBPCE)',f(d.pce_2p,2)],['CRUDO 2P (MMB)',f(d.crudo_2p,2)],['GAS NATURAL 2P (MMMPC)',f(d.gas_2p,2)],['CONDENSADO 2P (MMB)',f(d.cond_2p,2)],
    ['PETRÓLEO CRUDO EQUIVALENTE 3P (MMBPCE)',f(d.pce_3p,2)],['CRUDO 3P (MMB)',f(d.crudo_3p,2)],['GAS NATURAL 3P (MMMPC)',f(d.gas_3p,2)],['CONDENSADO 3P (MMB)',f(d.cond_3p,2)],
    ['POZOS EN EL CAMPO',String(wellsOf(d.nombre).length)]];
-  return `<div style="max-height:260px;overflow:auto;font-size:12px"><h3 style="margin:0 0 6px">${esc(d.nombre)}</h3><table style="border-collapse:collapse;width:100%">`+
-   filas.map(([k,v])=>`<tr><th style="text-align:left;border:1px solid #ccc;padding:3px 5px;background:#f3f3f3">${k}</th><td style="border:1px solid #ccc;padding:3px 5px">${v}</td></tr>`).join('')+
+  return `<div style="max-height:260px;overflow-y:auto;overflow-x:hidden;font-size:12px;width:100%"><h3 style="margin:0 0 6px">${esc(d.nombre)}</h3><table style="border-collapse:collapse;width:100%;table-layout:fixed">`+
+   filas.map(([k,v])=>`<tr><th style="width:58%;text-align:left;border:1px solid #ccc;padding:3px 5px;background:#f3f3f3;word-break:break-word">${k}</th><td style="border:1px solid #ccc;padding:3px 5px">${v}</td></tr>`).join('')+
    `</table>${pr.aprox?'<p style="margin:6px 0 0;color:#666">Superficie aproximada ('+esc(pr.aprox)+'), no es el contorno oficial.</p>':''}</div><p style="margin:8px 0 0"><button class="btn" data-sel>Ver pozos del campo</button></p>`;
 }
 function renderMap(){
   loadLeaflet(ok=>{
     $('#mapfall').hidden=ok;if(!ok)return;
-    if(!map){map=L.map('map',{keyboard:true,preferCanvas:true}).setView([22.5,-96],5);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,attribution:'© OpenStreetMap'}).addTo(map);layerS=L.layerGroup().addTo(map);layerC=L.layerGroup().addTo(map);layerP=L.layerGroup().addTo(map)}
+    if(!map){map=L.map('map',{keyboard:true,preferCanvas:true}).setView([22.5,-96],5);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,attribution:'© OpenStreetMap'}).addTo(map);if(BASE_GEO)L.geoJSON(BASE_GEO,{interactive:false,style:{color:'#7d8794',weight:1,fillColor:'#efe9da',fillOpacity:.4}}).addTo(map);layerS=L.layerGroup().addTo(map);layerC=L.layerGroup().addTo(map);layerP=L.layerGroup().addTo(map)}
     setTimeout(()=>map.invalidateSize(),50);
     layerC.clearLayers();layerP.clearLayers();layerS.clearLayers();
     const F=new Set(filtered().map(d=>d.nombre));let n=0;const col='pce_'+state.cat;
@@ -746,7 +798,7 @@ function renderMap(){
         const sel=d.nombre===state.sel;
         const g=L.geoJSON(ft,{style:{color:sel?'#000':'#c2409b',weight:sel?3:1.2,fillColor:'#e66fc0',fillOpacity:sel?.5:.32}}).addTo(layerS);
         g.bindTooltip(`${d.nombre} · ${nf0(d[col])} MMBPCE ${state.cat.toUpperCase()}${ft.properties.aprox?' · superficie aproximada':''}`,{sticky:true});
-        g.bindPopup(fichaCampo(d,ft.properties),{maxWidth:360});
+        g.bindPopup(fichaCampo(d,ft.properties),{minWidth:340,maxWidth:420});
         g.on('popupopen',e=>{const el=e.popup.getElement();const b=el&&el.querySelector('[data-sel]');if(b)b.onclick=()=>{map.closePopup();selectField(d.nombre)}});
         if(sel)polyBounds=g.getBounds()});
     }
@@ -781,14 +833,187 @@ $('#fpozo2').onchange=e=>loadWellsFile(e.target.files[0]);
 function clearLoaded(){coords=COORDS_INI;wellsRaw=POZOS_CSV?parseCsv(POZOS_CSV):[];try{localStorage.removeItem('mc_coords');localStorage.removeItem('mc_pozos')}catch(e){}indexWells();state.cmp=[];state.wst=null;state.wtx=null;renderQual();renderAll()}
 $('#chkpol').onchange=renderMap;$('#clrmap').onclick=clearLoaded;$('#pzclr').onclick=clearLoaded;
 
+/* ---------- reporte PDF ---------- */
+const rMean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const rMedian=a=>{const v=[...a].sort((x,y)=>x-y),n=v.length;return n?(n%2?v[(n-1)/2]:(v[n/2-1]+v[n/2])/2):null};
+const rSd=a=>{if(a.length<2)return null;const m=rMean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))};
+const rCorr=(x,y)=>{const n=x.length;if(n<3)return null;const mx=rMean(x),my=rMean(y);let a=0,b=0,c=0;for(let i=0;i<n;i++){a+=(x[i]-mx)*(y[i]-my);b+=(x[i]-mx)**2;c+=(y[i]-my)**2}return b&&c?a/Math.sqrt(b*c):null};
+function repAnalisis(F){
+  const col='pce_'+state.cat,T=F.reduce((s,d)=>s+d[col],0),s=[...F].sort((a,b)=>b[col]-a[col]);
+  const ub=UBS.map(u=>{const g=F.filter(d=>d.ubicacion===u);return{u,n:g.length,sum:g.reduce((a,d)=>a+d[col],0)}});
+  let ac=0,n80=0;if(T>0){for(;n80<s.length;n80++){ac+=s[n80][col];if(ac/T>=.8)break}n80++}
+  const t1=F.reduce((a,d)=>a+d.pce_1p,0),t3=F.reduce((a,d)=>a+d.pce_3p,0);
+  const big=F.filter(d=>d.pce_3p>=100&&d.certeza_1p_3p!=null).sort((a,b)=>a.certeza_1p_3p-b.certeza_1p_3p)[0];
+  const pr=F.filter(d=>d.superficie_km2>0&&d[col]>0);
+  const r=rCorr(pr.map(d=>Math.log10(d.superficie_km2)),pr.map(d=>Math.log10(d[col])));
+  const den=UBS.map(u=>({u,m:rMedian(pr.filter(d=>d.ubicacion===u).map(d=>d[col]/d.superficie_km2))})).filter(x=>x.m!=null);
+  const ws=wells.length?scopeWells(F):[];
+  const wc={Activo:0,Inactivo:0,'Sin dato':0};ws.forEach(w=>wc[w.cls]=(wc[w.cls]||0)+1);
+  const topw=ws.length?countBy(ws,w=>w.campo)[0]:null;
+  return{col,T,s,ub,n80,top10:T>0?s.slice(0,10).reduce((a,d)=>a+d[col],0)/T*100:null,t1,t3,cert:t3>0?t1/t3*100:null,big,r,npar:pr.length,den,ws,wc,topw};
+}
+function repFiltros(F){
+  const p=[`Reserva mostrada: ${CATS[state.cat]}`,`Ubicación: ${state.ub.size?[...state.ub].join(', '):'todas'}`];
+  if(state.q.trim())p.push(`Búsqueda: «${esc(state.q.trim())}»`);
+  if(state.tam)p.push(`Tamaño 2P: ${state.tam}`);if(state.flu)p.push(`Fluido: ${state.flu}`);if(state.tc)p.push(`Comentario: ${state.tc}`);
+  if(state.sel)p.push(`Campo seleccionado: ${esc(state.sel)}`);
+  return p.join(' · ')+` · Campos incluidos: <b>${F.length}</b> de ${DATA.length}`;
+}
+function repDiccionario(){
+  const keys=Object.keys(DATA[0]);
+  return keys.map(k=>{const v=DATA.map(d=>d[k]),nn=v.filter(x=>x!=null&&x!=='');const f=nn[0];
+    const dist=new Set(nn).size;
+    const tipo=typeof f==='number'?'Numérico':typeof f==='boolean'?'Lógico':dist<=12?'Categórico':'Texto';
+    return`<tr><td>${esc(k)}</td><td>${tipo}</td><td>${v.length-nn.length}</td><td>${tipo==='Numérico'||tipo==='Lógico'?'—':dist}</td><td>${esc(String(f??'').slice(0,28))}</td></tr>`}).join('');
+}
+/* ---- ficha y comparaciones (campo contra campo, pozo contra pozo) ---- */
+const repSel={a:null,b:null};
+const rDate=a=>{const v=a.filter(Boolean).sort();return v.length?[v[0],v[v.length-1]]:null};
+function repFieldInfo(d){
+  const ws=wellsOf(d.nombre),a=ws.filter(w=>w.cls==='Activo').length,i=ws.filter(w=>w.cls==='Inactivo').length,fd=rDate(ws.map(w=>w.fini));
+  return{d,n:ws.length,act:a,inact:i,pctA:ws.length?a/ws.length*100:null,prof:med(ws.map(w=>w.prof)),profMax:ws.length?Math.max(...ws.map(w=>w.prof||0)):null,dias:med(ws.map(w=>w.dias)),fd};
+}
+const FROWS=[ // etiqueta, función, decimales, ¿razón A/B?
+ ['Ubicación',x=>x.d.ubicacion],['Fluido dominante',x=>x.d.fluido_dominante],['Posición por 2P (de 477)',x=>x.d.rank_2p,0],
+ ['Superficie (km²)',x=>x.d.superficie_km2>0?x.d.superficie_km2:null,2,1],['Reserva 1P (MMBPCE)',x=>x.d.pce_1p,2,1],['Reserva 2P (MMBPCE)',x=>x.d.pce_2p,2,1],['Reserva 3P (MMBPCE)',x=>x.d.pce_3p,2,1],
+ ['Crudo 2P (MMB)',x=>x.d.crudo_2p,2,1],['Gas 2P (MMMPC)',x=>x.d.gas_2p,2,1],['Probable 2P−1P (MMBPCE)',x=>x.d.probables,2,1],
+ ['Certeza 1P/3P (%)',x=>x.d.certeza_1p_3p==null?null:x.d.certeza_1p_3p*100,1],['Densidad 2P (MMBPCE/km²)',x=>x.d.densidad_2p,2,1],
+ ['Pozos en el archivo',x=>x.n,0,1],['Pozos activos',x=>x.act,0,1],['Pozos inactivos',x=>x.inact,0,1],['% de pozos activos',x=>x.pctA,0],
+ ['Profundidad total mediana (m)',x=>x.prof,0,1],['Días de perforación (mediana)',x=>x.dias,0,1],['Primer pozo perforado',x=>x.fd?x.fd[0]:null]];
+function repCompareFields(da,db){
+  const A=repFieldInfo(da),B=repFieldInfo(db),f=(v,d)=>v==null?'—':typeof v==='number'?nf(v,d??2):esc(v);
+  const rows=FROWS.map(([t,fn,dec,ratio])=>{const x=fn(A),y=fn(B);
+    const r=ratio&&typeof x==='number'&&typeof y==='number'&&x>0&&y>0?(x>=y?`A = ${nf(x/y,2)}× B`:`B = ${nf(y/x,2)}× A`):'';
+    return`<tr><td>${t}</td><td>${f(x,dec)}</td><td>${f(y,dec)}</td><td style="text-align:left">${r}</td></tr>`}).join('');
+  const L=[],pair=(fn)=>[fn(A),fn(B)],nm=[da.nombre,db.nombre];
+  const cmp=(t,fn,fmt,mas,menos)=>{const [x,y]=pair(fn);if(typeof x!=='number'||typeof y!=='number'||x===y||Math.max(x,y)/Math.max(Math.min(x,y),1e-9)<1.05)return;const i=x>y?0:1,hi=Math.max(x,y),lo=Math.min(x,y);
+    L.push(`${mas.replace('{n}',`<b>${esc(nm[i])}</b>`)} (${fmt(hi)} frente a ${fmt(lo)}${lo>0?`, ${nf(hi/lo,1)} veces`:''}).`)};
+  cmp('2P',x=>x.d.pce_2p,v=>nf(v,1)+' MMBPCE','{n} tiene la mayor reserva 2P');
+  cmp('cert',x=>x.d.certeza_1p_3p==null?null:x.d.certeza_1p_3p*100,v=>nf(v,0)+' %','{n} es el de mayor certeza: más de su reserva 3P está probada');
+  cmp('den',x=>x.d.densidad_2p,v=>nf(v,2)+' MMBPCE/km²','{n} concentra más reserva por superficie');
+  cmp('sup',x=>x.d.superficie_km2>0?x.d.superficie_km2:null,v=>nf(v,1)+' km²','{n} es el de mayor superficie');
+  cmp('poz',x=>x.n||null,v=>nf0(v)+' pozos','{n} tiene más pozos');
+  const [pa,pb]=pair(x=>x.pctA);if(pa!=null&&pb!=null)L.push(`Pozos activos: ${esc(da.nombre)} ${nf(pa,0)} % y ${esc(db.nombre)} ${nf(pb,0)} %.`);
+  cmp('prof',x=>x.prof,v=>nf0(v)+' m','{n} tiene pozos más profundos (mediana)');
+  L.push(da.ubicacion===db.ubicacion?`Ambos son campos de ubicación <b>${esc(da.ubicacion)}</b>.`:`Son de distinta ubicación: ${esc(da.nombre)} es ${esc(da.ubicacion)} y ${esc(db.nombre)} es ${esc(db.ubicacion)}.`);
+  const total=da.pce_2p+db.pce_2p,mayor=da.pce_2p>=db.pce_2p?da:db;
+  const res=`Entre los dos suman ${nf(total,1)} MMBPCE de reserva 2P (${nf(total/DATA.reduce((s,d)=>s+d.pce_2p,0)*100,1)} % del total nacional); <b>${esc(mayor.nombre)}</b> aporta ${nf(mayor.pce_2p/total*100,0)} %.`;
+  return`<h3>Comparación de campos: A = ${esc(da.nombre)} · B = ${esc(db.nombre)}</h3>
+  <table><thead><tr><th>Indicador</th><th>A · ${esc(da.nombre)}</th><th>B · ${esc(db.nombre)}</th><th style="text-align:left">Relación</th></tr></thead><tbody>${rows}</tbody></table>
+  <h3>Análisis rápido</h3><ul>${L.map(x=>`<li>${x}</li>`).join('')}<li>${res}</li></ul>`;
+}
+function repFieldCard(d){
+  const X=repFieldInfo(d),f=(v,dd)=>v==null?'—':nf(v,dd??2);
+  return`<h3>Ficha del campo ${esc(d.nombre)}</h3>
+  <table><tbody>${[['Ubicación',d.ubicacion],['Posición por reserva 2P',`${d.rank_2p} de ${DATA.length}`],['Superficie',d.superficie_km2>0?f(d.superficie_km2)+' km²':'sin dato'],['Reserva 1P / 2P / 3P',`${f(d.pce_1p)} / ${f(d.pce_2p)} / ${f(d.pce_3p)} MMBPCE`],['Crudo · gas · condensado (2P)',`${f(d.crudo_2p)} MMB · ${f(d.gas_2p)} MMMPC · ${f(d.cond_2p)} MMB`],['Certeza 1P/3P',d.certeza_1p_3p==null?'—':nf(d.certeza_1p_3p*100,0)+' %'],['Densidad 2P',d.densidad_2p==null?'—':f(d.densidad_2p)+' MMBPCE/km²'],['Fluido dominante',d.fluido_dominante],['Comentario del archivo',d.comentario||'—'],
+   ['Pozos',X.n?`${X.n} (${X.act} activos, ${X.inact} inactivos, ${X.n-X.act-X.inact} sin dato)`:'sin pozos en el archivo'],['Profundidad total mediana',X.prof==null?'—':nf0(X.prof)+' m (máxima '+nf0(X.profMax)+' m)'],['Pozos perforados entre',X.fd?X.fd[0]+' y '+X.fd[1]:'—']].map(([k,v])=>`<tr><td style="width:34%"><b>${k}</b></td><td style="text-align:left">${esc(v)}</td></tr>`).join('')}</tbody></table>`;
+}
+function repCompareWells(ids){
+  const W=ids.map(i=>wells[i]).filter(Boolean);if(!W.length)return'';
+  const f=(v,d=0)=>v==null?'—':nf(v,d);
+  const rows=W.map(w=>`<tr><td>${esc(w.pozo)}</td><td>${esc(w.campo)}</td><td>${w.cls}${w.estado&&w.estado!==w.cls?' ('+esc(w.estado)+')':''}</td><td>${esc(w.clas||'—')}</td><td>${esc(w.tray||'—')}</td><td>${f(w.prof)}</td><td>${f(w.profv)}</td><td>${f(w.desv)}</td><td>${f(w.dias)}</td><td>${w.fini||'—'}</td></tr>`).join('');
+  const L=[],best=(fn,mas)=>{const v=W.filter(w=>fn(w)!=null);if(v.length<2)return;const s=[...v].sort((a,b)=>fn(b)-fn(a)),a=s[0],b=s[s.length-1];if(fn(a)===fn(b))return;
+    L.push(mas(a,b))};
+  best(w=>w.prof,(a,b)=>`<b>${esc(a.pozo)}</b> es el más profundo (${nf0(a.prof)} m); <b>${esc(b.pozo)}</b> el más somero (${nf0(b.prof)} m), una diferencia de ${nf0(a.prof-b.prof)} m (${nf(a.prof/b.prof,2)}×).`);
+  best(w=>w.dias,(a,b)=>`<b>${esc(a.pozo)}</b> tardó más en perforarse (${nf0(a.dias)} días) frente a ${nf0(b.dias)} de <b>${esc(b.pozo)}</b>.`);
+  best(w=>w.desv,(a,b)=>`Mayor desviación entre profundidad total y vertical: <b>${esc(a.pozo)}</b> (${nf0(a.desv)} m), lo que indica un pozo más direccional u horizontal.`);
+  const act=W.filter(w=>w.cls==='Activo').length,ina=W.filter(w=>w.cls==='Inactivo').length;
+  L.push(`Estado: ${act} activo${act===1?'':'s'}, ${ina} inactivo${ina===1?'':'s'}${W.length-act-ina?` y ${W.length-act-ina} sin dato`:''}.`);
+  const cs=[...new Set(W.map(w=>w.campo))];L.push(cs.length===1?`Todos pertenecen al campo <b>${esc(cs[0])}</b>.`:`Pertenecen a ${cs.length} campos distintos: ${cs.map(esc).join(', ')}.`);
+  return`<h3>${W.length>1?'Comparación de pozos':'Ficha del pozo'}</h3>
+  <table><thead><tr><th>Pozo</th><th>Campo</th><th>Estado</th><th>Clasif.</th><th>Trayect.</th><th>Prof. total (m)</th><th>Prof. vert. (m)</th><th>Desv. (m)</th><th>Días perf.</th><th>Inicio</th></tr></thead><tbody>${rows}</tbody></table>
+  ${W.length>1?'<h3>Análisis rápido</h3>':''}<ul>${(W.length>1?L:L.slice(-2)).map(x=>`<li>${x}</li>`).join('')}</ul>`;
+}
+function repSelHtml(){
+  const da=repSel.a||(state.sel?byName[state.sel]:null),db=repSel.b;let h='';
+  if(da&&db&&da!==db)h+=repCompareFields(da,db);else if(da)h+=repFieldCard(da);
+  if(state.cmp.length)h+=repCompareWells(state.cmp);
+  return h;
+}
+function repSelUi(){
+  const w=state.cmp.map(i=>wells[i]).filter(Boolean);
+  $('#rep-wells').innerHTML=w.length?w.map(x=>`<span class="chip" style="cursor:default">${esc(x.pozo)}</span>`).join(' ')+` <button class="btn" id="rep-clrw">Quitar pozos</button>`:'<span style="color:var(--mute)">Ninguno. Elige pozos en la pestaña Pozos (clic en una fila) y aparecerán aquí.</span>';
+  const b=$('#rep-clrw');if(b)b.onclick=()=>{state.cmp=[];renderAll()};
+}
+function repSetField(k,v){const d=byNk[nk(v)];repSel[k]=v.trim()&&d?d:null;if(tab==='reporte')renderReport()}
+function renderReport(){
+  const F=filtered(),A=repAnalisis(F),cat=state.cat.toUpperCase(),el=$('#rep');
+  if(!F.length){repSelUi();el.innerHTML='<h1>Reporte</h1><p>No hay campos con los filtros actuales. Usa «Limpiar todo» y vuelve a generarlo.</p>';return}
+  const team=$('#rep-team').value.trim(),notes=$('#rep-notes').value.trim();
+  const fm=(v,d=2)=>v==null?'—':nf(v,d);
+  // estadísticas descriptivas
+  const VARS=[['pce_1p','Reserva 1P (MMBPCE)'],['pce_2p','Reserva 2P (MMBPCE)'],['pce_3p','Reserva 3P (MMBPCE)'],['superficie_km2','Superficie (km²)',1],['densidad_2p','Densidad 2P (MMBPCE/km²)',1],['certeza_1p_3p','Certeza 1P/3P (fracción)',1]];
+  const st=VARS.map(([k,t,pos])=>{const v=F.map(d=>d[k]).filter(x=>x!=null&&isFinite(x)&&(!pos||x>0));
+    if(!v.length)return`<tr><td>${t}</td><td>0</td><td colspan="5">sin datos</td></tr>`;
+    return`<tr><td>${t}</td><td>${v.length}</td><td>${fm(rMean(v))}</td><td>${fm(rMedian(v))}</td><td>${fm(rSd(v))}</td><td>${fm(Math.min(...v))}</td><td>${fm(Math.max(...v))}</td></tr>`}).join('');
+  // indicadores
+  const kp=[['Campos analizados',nf0(F.length)],[`Reserva ${cat} total`,nf0(A.T)+' MMBPCE'],['Reserva 1P total',nf0(A.t1)+' MMBPCE'],['Reserva 3P total',nf0(A.t3)+' MMBPCE'],
+    ['Certeza global (1P/3P)',A.cert==null?'—':nf(A.cert,1)+' %'],[`Los 10 mayores (${cat})`,A.top10==null?'—':nf(A.top10,1)+' %'],[`Campos para el 80 %`,String(A.n80)],
+    ['Mediana por campo',fm(rMedian(F.map(d=>d[A.col])))+' MMBPCE'],['Campo mayor',esc(A.s[0].nombre)]];
+  // gráficas
+  const FIG=[['c-ub',0],['c-flu',0],['c-grp',0],['c-tam',0],['c-top',1],['c-sc',1],['c-par',1],['c-stk',1]];
+  if(wells.length)FIG.push(['c-pz-est',0],['c-pz-top',0]);
+  const figs=FIG.map(([id,w])=>{const c=$('#'+id);if(!c||!$('.cbody svg',c))return'';
+    const lg=$('.legend',c);
+    return`<figure class="${w?'w':''}"><figcaption>${esc($('h2',c).textContent)}<small>${esc($('.sub',c)?$('.sub',c).textContent.replace(/\s*Clic[^.]*\.?/g,'').trim():'')}</small></figcaption>${$('.cbody',c).innerHTML.replace(/\s(tabindex)="[^"]*"/g,'')}${lg?`<div class="legend">${lg.innerHTML}</div>`:''}</figure>`}).join('');
+  // hallazgos y preguntas
+  const hall=$('#hall').innerHTML;
+  const q1=`Las reservas ${cat} suman <b>${nf0(A.T)} MMBPCE</b>. Por ubicación: ${A.ub.filter(x=>x.n).map(x=>`${x.u} ${nf(x.sum/A.T*100,1)} % (${x.n} campos)`).join('; ')}. Los 10 campos mayores reúnen <b>${nf(A.top10,1)} %</b> y bastan <b>${A.n80}</b> campos para llegar a 80 %, así que la reserva está muy concentrada.`;
+  const q2=A.cert==null?'No hay reserva 3P en los campos filtrados.':`Solo <b>${nf(A.cert,1)} %</b> de la reserva 3P está probada (1P ${nf0(A.t1)} de ${nf0(A.t3)} MMBPCE); el resto es probable o posible y depende de confirmación.${A.big?` El caso más claro entre los campos con 3P ≥ 100 MMBPCE es <b>${esc(A.big.nombre)}</b>, con solo ${nf(A.big.certeza_1p_3p*100,0)} % probado.`:''}`;
+  const rr=A.r==null?null:Math.abs(A.r);
+  const q3=A.r==null?'No hay suficientes campos con superficie y reserva para calcular la relación.':`Con ${A.npar} campos que tienen superficie y reserva, la correlación entre ambas en escala logarítmica es <b>${nf(A.r,2)}</b> (${rr<.3?'débil':rr<.6?'moderada':'fuerte'}): un campo más grande tiende a tener más reserva, pero el tamaño no la determina. Densidad mediana (MMBPCE/km²): ${A.den.map(x=>`${x.u} ${nf(x.m,2)}`).join('; ')}.`;
+  const q4=A.ws.length?`En los campos filtrados hay <b>${nf0(A.ws.length)}</b> pozos: ${nf0(A.wc.Activo)} activos (${nf(A.wc.Activo/A.ws.length*100,0)} %), ${nf0(A.wc.Inactivo)} inactivos y ${nf0(A.wc['Sin dato'])} sin dato.${A.topw?` El campo con más pozos es <b>${esc(A.topw[0])}</b> (${nf0(A.topw[1])}).`:''}`:'No hay pozos cargados en estos campos.';
+  const conc=[`La reserva se concentra en pocos campos: ${nf(A.top10,1)} % en los 10 mayores y ${A.n80} campos para el 80 %.`,
+    A.ub.length?`La ubicación con más reserva ${cat} es ${[...A.ub].sort((a,b)=>b.sum-a.sum)[0].u} (${nf([...A.ub].sort((a,b)=>b.sum-a.sum)[0].sum/A.T*100,1)} %).`:'',
+    A.cert==null?'':`La certeza global es ${nf(A.cert,1)} %: gran parte de la reserva 3P aún no está probada.`,
+    A.r==null?'':`La superficie explica solo en parte la reserva (correlación ${nf(A.r,2)}); la densidad por ubicación marca la diferencia.`,
+    A.ws.length?`Los pozos cargados muestran ${nf(A.wc.Activo/A.ws.length*100,0)} % activos.`:''].filter(Boolean);
+  const sel=repSelHtml();repSelUi();
+  el.innerHTML=`
+  <h1>Reservas de hidrocarburos de México</h1>
+  <p class="mt">Reporte de análisis exploratorio · Generado el ${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}${team?` · Equipo: ${esc(team)}`:''}</p>
+  <p class="mt">${repFiltros(F)}</p>
+  <h2>1. Datos</h2>
+  <p><b>Fuente:</b> Comisión Nacional de Hidrocarburos (CNH) y Secretaría de Energía (SENER), archivo «Campos Reservas 01-01-2024» del mapa de hidrocarburos (mapa-hidrocarburos.energia.gob.mx). Contiene ${DATA.length} campos con reservas 1P, 2P y 3P de crudo, gas natural, condensado y petróleo crudo equivalente. El archivo original se conserva sin modificar; las columnas derivadas (probables, posibles, certeza, densidad, fluido dominante, tamaño) se calculan a partir de él.</p>
+  ${wells.length?`<p><b>Pozos:</b> ${nf0(wells.length)} pozos del servicio «Pozos, 2024» de la CNH, cruzados con los campos por nombre.</p>`:''}
+  <h3>Columnas del conjunto de datos</h3>
+  <table><thead><tr><th>Columna</th><th>Tipo</th><th>Nulos</th><th>Valores distintos</th><th>Ejemplo</th></tr></thead><tbody>${repDiccionario()}</tbody></table>
+  <h2>2. Indicadores</h2><div class="rk">${kp.map(([t,v])=>`<div><span>${t}</span><b>${v}</b></div>`).join('')}</div>
+  <h2>3. Estadísticas descriptivas</h2>
+  <table><thead><tr><th>Variable</th><th>n</th><th>Media</th><th>Mediana</th><th>Desv. est.</th><th>Mín.</th><th>Máx.</th></tr></thead><tbody>${st}</tbody></table>
+  <p class="mt">Superficie y densidad consideran solo campos con superficie mayor a cero. La mediana es mucho menor que la media: pocos campos grandes y muchos pequeños.</p>
+  <h2>4. Gráficas</h2><div class="rg">${figs}</div>
+  <h2>5. Hallazgos</h2><ul>${hall}</ul>
+  <h2>6. Preguntas de análisis</h2>
+  <div class="q"><h3>¿Dónde se concentran las reservas?</h3><p>${q1}</p></div>
+  <div class="q"><h3>¿Qué tan seguras son?</h3><p>${q2}</p></div>
+  <div class="q"><h3>¿Existe relación entre la superficie de un campo y sus reservas?</h3><p>${q3}</p></div>
+  <div class="q"><h3>¿Cuántos pozos hay y cuántos están activos?</h3><p>${q4}</p></div>
+  ${sel?`<h2>7. Campo y pozos seleccionados</h2>${sel}`:''}
+  <h2>${sel?8:7}. Conclusiones</h2><ul>${conc.map(x=>`<li>${x}</li>`).join('')}</ul>
+  ${notes?`<h3>Comentarios del equipo</h3><div class="notes">${esc(notes)}</div>`:''}
+  <p class="mt" style="margin-top:16px">Las estimaciones de reservas son datos oficiales a la fecha de corte; este reporte solo las organiza y resume.</p>`;
+}
+function printReport(){
+  renderReport();document.body.classList.add('pr');
+  window.addEventListener('afterprint',()=>document.body.classList.remove('pr'),{once:true});
+  setTimeout(()=>window.print(),60);
+}
+$('#rep-pdf').onclick=printReport;
+$('#rep-fa').addEventListener('change',e=>repSetField('a',e.target.value));
+$('#rep-fb').addEventListener('change',e=>repSetField('b',e.target.value));
+$('#rep-team').addEventListener('input',()=>{if(tab==='reporte')renderReport()});
+$('#rep-notes').addEventListener('input',()=>{if(tab==='reporte')renderReport()});
+
 /* ---------- pestañas ---------- */
-const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['glosario','Glosario'],['ayuda','Ayuda']];
+const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['reporte','Reporte PDF'],['glosario','Glosario'],['ayuda','Ayuda']];
 let tab='resumen';
 function showTab(t,focus){
   tab=t;
   $('#tabs').innerHTML=TABS.map(([k,n],i)=>`<button role="tab" id="tab-${k}" data-t="${k}" aria-selected="${k===t}" tabindex="${k===t?0:-1}" aria-controls="t-${k}">${i+1}. ${n}</button>`).join('');
   $$('section.tp').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
   if(t==='mapa')renderMap();
+  if(t==='reporte')renderReport();
   if(focus)$('#tab-'+t).focus();
 }
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b)showTab(b.dataset.t)});
@@ -819,7 +1044,7 @@ $('#dlcsv').onclick=()=>{const F=filtered(),keys=Object.keys(DATA[0]);const q=v=
 $('#dljson').onclick=()=>download('campos_filtrados.json',JSON.stringify(filtered(),null,1),'application/json');
 document.addEventListener('keydown',e=>{
   const t=e.target;if(t.matches('input,select,textarea'))return;if(e.ctrlKey||e.metaKey||e.altKey)return;
-  if(/^[1-8]$/.test(e.key)){showTab(TABS[+e.key-1][0],true);return}
+  if(/^[1-9]$/.test(e.key)){showTab(TABS[+e.key-1][0],true);return}
   if(e.key==='p'||e.key==='P'){const ks=Object.keys(CATS);state.cat=ks[(ks.indexOf(state.cat)+1)%3];renderAll()}
   else if(e.key==='u'||e.key==='U'){const cur=state.ub.size===1?[...state.ub][0]:null;const order=[null,...UBS];const nx=order[(order.indexOf(cur)+1)%order.length];state.ub.clear();if(nx)state.ub.add(nx);renderAll()}
   else if(e.key==='/'){e.preventDefault();$('#q').focus()}
@@ -841,6 +1066,7 @@ function renderAll(){
   const F=filtered();
   renderBar();renderDetail();renderKpis(F);renderCharts(F);renderHall(F);renderTable(F);renderPozos(F);
   if(tab==='mapa')renderMap();
+  if(tab==='reporte')renderReport();
 }
 indexWells();fillDatalist();renderQual();showTab('resumen');renderAll();
 </script>
