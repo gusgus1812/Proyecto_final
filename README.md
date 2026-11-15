@@ -49,7 +49,7 @@ Dona y pastel, barras (simples, agrupadas, apiladas), histograma, dispersión lo
 Abre la carpeta, acepta las extensiones recomendadas, `Ctrl+Shift+B` ejecuta limpieza + build, clic derecho en `web/index.html` → *Open with Live Server*.
 
 ## Autoría y licencia
-- **Autor:** Emmanuel Vázquez Alfaro · © 2026. Todos los derechos reservados (ver `LICENSE`).
+- **Autor:** Emmanuel Vázquez Alfaro (emmanuelvazquezalfaro123@gmail.com) · © 2026. Todos los derechos reservados (ver `LICENSE`).
 - El código, el análisis y la documentación son de autoría propia; los datos son públicos de la CNH y SENER y no están cubiertos por la licencia.
 - La autoría queda registrada en el historial de commits de Git (autor y fecha de cada cambio).
-- El nombre del autor aparece en el pie de la aplicación, en cada reporte PDF generado (encabezado, pie y marca de agua) y en el encabezado de cada script.
+- El nombre del autor aparece en el pie de la aplicación, en cada reporte PDF generado (autor y aviso de derechos) y en el encabezado de cada script.
