@@ -1,0 +1,20 @@
+Copyright (c) 2026 Emmanuel Vázquez Alfaro. Todos los derechos reservados.
+
+PROYECTO «RESERVAS DE HIDROCARBUROS DE MÉXICO»
+Código fuente, scripts, aplicación web, análisis, textos y documentación de este repositorio.
+
+Se permite, sin necesidad de pedir autorización:
+  - consultar y leer el código y la documentación;
+  - ejecutarlo para evaluar el proyecto (revisión académica);
+  - citarlo, siempre mencionando al autor.
+
+No se permite sin autorización por escrito del autor:
+  - copiar, modificar, publicar o redistribuir el código o la documentación, en todo o en parte;
+  - presentarlo, total o parcialmente, como trabajo propio o de terceros;
+  - eliminar o alterar los avisos de autoría y de derechos de autor.
+
+Los datos originales (reservas por campo y pozos) pertenecen a la Comisión Nacional de Hidrocarburos
+(CNH) y a la Secretaría de Energía (SENER) y son datos públicos; esta licencia NO los cubre, solo cubre
+el código y el análisis de este proyecto.
+
+La evidencia de autoría es el historial de commits de Git de este repositorio (autor y fecha).
