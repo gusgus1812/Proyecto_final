@@ -139,6 +139,13 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
   body.pr .rep{border:0;border-radius:0;padding:0;max-width:none}
   body.pr *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+#t-asesor .ase h4{margin:12px 0 4px;font-size:14px;color:var(--accent)}
+#t-asesor .ase p{margin:4px 0}
+#t-asesor .ase ul{margin:4px 0;padding-left:20px}#t-asesor .ase li{margin:4px 0}
+.asetb{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+.asetb th,.asetb td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;position:static;white-space:normal}
+.asetb th:first-child,.asetb td:first-child{text-align:left}
+.rep .ase h4{margin:10px 0 3px;font-size:12.5px}.rep .asetb{font-size:11.5px}
 </style>
 <!--__LEAFLET__-->
 </head>
@@ -255,6 +262,20 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
   <article class="rep" id="rep"></article>
 </section>
 
+<section class="tp" id="t-asesor" role="tabpanel">
+  <div class="note">El <b>Asesor técnico</b> interpreta un campo o un pozo con reglas de ingeniería aplicadas a tus datos: certeza de la reserva, composición 1P/2P/3P, densidad, comparación con campos similares, estado y trayectoria de los pozos. <b>No usa inteligencia artificial</b>: cada frase sale de una regla y de cifras del archivo. No sustituye una evaluación certificada de reservas.</div>
+  <div class="card" style="display:grid;gap:10px;margin-bottom:14px">
+    <div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <label>Campo <input type="text" id="as-campo" list="dl-campos" placeholder="Escribe o elige un campo, p. ej. IXACHI" style="width:100%;font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)"></label>
+      <label>Pozo (opcional) <select id="as-pozo" style="width:100%"></select></label>
+    </div>
+    <div id="as-chips" style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Preguntas sugeridas"></div>
+    <form id="as-form" style="display:flex;gap:8px"><input type="search" id="as-q" placeholder="O escribe tu pregunta: ¿qué riesgos tiene? ¿qué es 2P? ¿está activo el pozo?" style="flex:1" aria-label="Pregunta"><button class="btn pri" type="submit">Consultar</button></form>
+  </div>
+  <article class="card" id="as-out" aria-live="polite"></article>
+  <div id="as-actions" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap" hidden><button class="btn" id="as-add">Agregar al reporte PDF</button><button class="btn" id="as-rep">Ir al reporte PDF</button></div>
+</section>
+
 <section class="tp" id="t-glosario" role="tabpanel">
   <div class="gl" id="gl"></div>
 </section>
@@ -262,7 +283,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 <section class="tp" id="t-ayuda" role="tabpanel">
   <div class="card"><h2>Atajos de teclado</h2>
   <ul class="hall">
-    <li><kbd>1</kbd>–<kbd>9</kbd> cambia de pestaña (o <kbd>←</kbd><kbd>→</kbd> sobre las pestañas).</li>
+    <li><kbd>1</kbd>–<kbd>9</kbd> y <kbd>0</kbd> cambia de pestaña (o <kbd>←</kbd><kbd>→</kbd> sobre las pestañas).</li>
     <li><kbd>P</kbd> cicla 1P → 2P → 3P. <kbd>U</kbd> cicla la ubicación (todas → terrestre → marino → aguas someras).</li>
     <li><kbd>/</kbd> enfoca el buscador. <kbd>Esc</kbd> limpia filtros y selección. <kbd>?</kbd> abre esta ayuda.</li>
     <li>En cualquier gráfica: <kbd>Tab</kbd> entra, flechas recorren, <kbd>Enter</kbd> selecciona o filtra.</li>
@@ -972,7 +993,7 @@ function renderReport(){
     A.cert==null?'':`La certeza global es ${nf(A.cert,1)} %: gran parte de la reserva 3P aún no está probada.`,
     A.r==null?'':`La superficie explica solo en parte la reserva (correlación ${nf(A.r,2)}); la densidad por ubicación marca la diferencia.`,
     A.ws.length?`Los pozos cargados muestran ${nf(A.wc.Activo/A.ws.length*100,0)} % activos.`:''].filter(Boolean);
-  const sel=repSelHtml();repSelUi();
+  const sel=repSelHtml(),aseH=ase.add&&ase.html?`<h3>${esc(ase.titulo)}</h3><div class="ase">${ase.html}</div><p class="mt">${ASE_AVISO}</p>`:'';repSelUi();
   el.innerHTML=`
   <h1>Reservas de hidrocarburos de México</h1>
   <p class="mt">Reporte de análisis exploratorio · Generado el ${new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</p>
@@ -995,7 +1016,8 @@ function renderReport(){
   <div class="q"><h3>¿Existe relación entre la superficie de un campo y sus reservas?</h3><p>${q3}</p></div>
   <div class="q"><h3>¿Cuántos pozos hay y cuántos están activos?</h3><p>${q4}</p></div>
   ${sel?`<h2>7. Campo y pozos seleccionados</h2>${sel}`:''}
-  <h2>${sel?8:7}. Conclusiones</h2><ul>${conc.map(x=>`<li>${x}</li>`).join('')}</ul>
+  ${aseH?`<h2>${sel?8:7}. Interpretación técnica</h2>${aseH}`:''}
+  <h2>${7+(sel?1:0)+(aseH?1:0)}. Conclusiones</h2><ul>${conc.map(x=>`<li>${x}</li>`).join('')}</ul>
   ${notes?`<h3>Comentarios del equipo</h3><div class="notes">${esc(notes)}</div>`:''}
   <p class="mt" style="margin-top:16px">Las estimaciones de reservas son datos oficiales a la fecha de corte; este reporte solo las organiza y resume.</p>
   <p class="mt">© ${ANIO} ${esc(AUTOR)} (${esc(CORREO)}) · Análisis y aplicación de autoría propia; datos públicos de la CNH y SENER. Prohibida su reproducción o entrega como trabajo propio sin autorización.</p>`;
@@ -1011,8 +1033,206 @@ $('#rep-fb').addEventListener('change',e=>repSetField('b',e.target.value));
 $('#rep-team').addEventListener('input',()=>{if(tab==='reporte')renderReport()});
 $('#rep-notes').addEventListener('input',()=>{if(tab==='reporte')renderReport()});
 
+/* ---------- asesor técnico: interpretación con reglas de ingeniería (sin IA) ---------- */
+const ase={campo:null,pozo:null,intent:null,titulo:'',html:'',add:false};
+const ASE_Q={
+ campo:[['resumen','Resumen ejecutivo'],['solidez','¿Qué tan sólida es la reserva?'],['riesgos','¿Qué riesgos identificas?'],['comparar','¿Cómo se compara con campos similares?'],['acciones','¿Qué recomiendas revisar?']],
+ pozo:[['pozo','Interpretación del pozo'],['pozovscampo','Comparación con los demás pozos del campo'],['estado','Estado operativo y acciones posibles']]};
+const ASE_AVISO='Interpretación técnica automatizada, elaborada con reglas de ingeniería sobre el archivo de reservas (corte 01-01-2024) y los pozos cargados. No sustituye una evaluación de reservas certificada ni incorpora datos de producción, costos o precios.';
+const aseP=t=>`<p>${t}</p>`,aseL=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`,aseS=(t,b)=>`<h4>${t}</h4>${b}`;
+function aseFacts(d){
+  const nat=DATA.reduce((s,x)=>s+x.pce_2p,0),same=DATA.filter(x=>x.ubicacion===d.ubicacion);
+  const dens=same.filter(x=>x.densidad_2p>0).map(x=>x.densidad_2p);
+  return{nat,same,pos:same.filter(x=>x.pce_2p>d.pce_2p).length+1,share:nat?d.pce_2p/nat*100:null,dens,medDen:rMedian(dens),
+    dp:d.densidad_2p>0&&dens.length?dens.filter(v=>v<=d.densidad_2p).length/dens.length*100:null,
+    liq:d.pce_2p>0?Math.min(100,(d.crudo_2p+d.cond_2p)/d.pce_2p*100):null,
+    cert:d.certeza_1p_3p==null?null:d.certeza_1p_3p*100,r12:d.pce_2p>0?d.pce_1p/d.pce_2p*100:null,ws:wellsOf(d.nombre)};
+}
+const aseNivel=c=>c==null?'indeterminado':c>=60?'alto':c>=40?'moderado':'bajo';
+function aseWellsLine(d,F){
+  const ws=F.ws;if(!ws.length)return'';
+  const a=ws.filter(w=>w.cls==='Activo').length,i=ws.filter(w=>w.cls==='Inactivo').length,pm=rMedian(ws.map(w=>w.prof).filter(x=>x!=null));
+  return`En el archivo de pozos hay <b>${nf0(ws.length)}</b> pozos asociados: ${a} activos (${nf(a/ws.length*100,0)} %), ${i} inactivos y ${ws.length-a-i} sin estado interpretable${pm!=null?`; la profundidad total mediana es de ${nf0(pm)} m`:''}.`;
+}
+function aseResumen(d){
+  const F=aseFacts(d),o=[];
+  if(d.pce_2p<=0)o.push(aseP(`El campo <b>${esc(d.nombre)}</b> (${d.ubicacion.toLowerCase()}) <b>no registra reserva 2P</b> en el corte; su volumen está en la categoría 3P (${nf(d.pce_3p,1)} MMBPCE)${d.comentario?` y el archivo lo anota como «${esc(d.comentario)}»`:''}. Debe leerse como un recurso que aún depende de confirmación, no como una reserva establecida.`));
+  else{
+    o.push(aseP(`El campo <b>${esc(d.nombre)}</b> (${d.ubicacion.toLowerCase()}) ocupa la posición <b>${d.rank_2p} de ${DATA.length}</b> por reserva 2P, con <b>${nf(d.pce_2p,1)} MMBPCE</b>, equivalente a ${nf(F.share,2)} % del total nacional. Dentro de los ${F.same.length} campos de su misma ubicación es el número ${F.pos}.`));
+    o.push(aseP(`Su perfil es predominantemente <b>${d.fluido_dominante.toLowerCase()}</b>${F.liq!=null?` (los líquidos representan cerca de ${nf(F.liq,0)} % de la reserva 2P en barriles equivalentes)`:''}.`));
+  }
+  const L=[`Composición de la reserva 3P (${nf(d.pce_3p,1)} MMBPCE): ${nf(d.pce_1p,1)} probada, ${nf(d.probables,1)} probable adicional y ${nf(d.posibles,1)} posible adicional.`];
+  if(F.cert!=null)L.push(`Grado de certeza (1P ÷ 3P): <b>${nf(F.cert,0)} %</b>, nivel <b>${aseNivel(F.cert)}</b>.`);
+  if(d.densidad_2p>0)L.push(`Densidad de reserva: ${nf(d.densidad_2p,2)} MMBPCE/km²${F.medDen?`, ${d.densidad_2p>F.medDen*1.25?'por encima de':d.densidad_2p<F.medDen*.8?'por debajo de':'cercana a'} la mediana de los campos ${d.ubicacion.toLowerCase()}s (${nf(F.medDen,2)})`:''}${F.dp!=null?` · percentil ${nf(F.dp,0)}`:''}.`);
+  else L.push('Superficie no disponible en el archivo: no es posible calcular densidad de reserva.');
+  const w=aseWellsLine(d,F);if(w)L.push(w);
+  o.push(aseS('Evidencia',aseL(L)));
+  let lec;
+  if(d.pce_2p<=0)lec='Campo sin reserva 2P: su valor depende de actividad de evaluación posterior.';
+  else if(F.cert>=60)lec='Reserva mayoritariamente probada; perfil de menor incertidumbre técnica.';
+  else if(F.cert>=40)lec='Perfil intermedio: una parte relevante de la reserva aún depende de confirmación y desarrollo.';
+  else lec='Dependencia alta de reservas probables y posibles: el valor del campo es sensible al resultado de la delimitación y el desarrollo.';
+  o.push(aseS('Lectura general',aseP(lec)));
+  return o.join('');
+}
+function aseSolidez(d){
+  const F=aseFacts(d),o=[];
+  if(d.pce_3p<=0)return aseP('El campo no tiene reserva 3P registrada; no hay base para evaluar su solidez.');
+  const pct=v=>nf(v/d.pce_3p*100,0)+' %';
+  o.push(aseS('Composición de la reserva 3P',aseL([`Probada (1P): <b>${nf(d.pce_1p,1)}</b> MMBPCE (${pct(d.pce_1p)})`,`Probable adicional (2P − 1P): ${nf(d.probables,1)} MMBPCE (${pct(d.probables)})`,`Posible adicional (3P − 2P): ${nf(d.posibles,1)} MMBPCE (${pct(d.posibles)})`])));
+  const L=[`Certeza 1P/3P: <b>${nf(F.cert,0)} %</b> (${aseNivel(F.cert)}).`];
+  if(F.r12!=null)L.push(`Relación 1P/2P: ${nf(F.r12,0)} %. ${F.r12>=80?'La reserva 2P está casi toda probada.':F.r12>=50?'Más de la mitad de la reserva 2P está probada.':'La mayor parte de la reserva 2P es todavía probable.'}`);
+  o.push(aseS('Indicadores',aseL(L)));
+  let t;
+  if(F.cert>=60)t='La reserva puede considerarse <b>sólida</b>: la mayor parte del volumen 3P ya cumple el criterio de certeza razonable de recuperación. La variación esperada entre los escenarios 1P, 2P y 3P es relativamente acotada.';
+  else if(F.cert>=40)t='La solidez es <b>moderada</b>. Existe un núcleo probado, pero una fracción importante del volumen requiere pozos de desarrollo, pruebas de producción o delimitación adicional para reclasificarse a probada.';
+  else t='La solidez es <b>baja</b>: el volumen probado es una fracción reducida del escenario 3P. El rango entre escenarios es amplio y cualquier estimación de valor debe tratarse como sensible a la incertidumbre.';
+  o.push(aseS('Interpretación',aseP(t)));
+  const ob=[];if(d.tipo_comentario&&d.tipo_comentario!=='Sin comentario')ob.push(`El archivo anota: «${esc(d.comentario)}» (${esc(d.tipo_comentario.toLowerCase())}). ${d.tipo_comentario==='Nuevo campo'?'Los descubrimientos recientes suelen tener reservas aún en proceso de delimitación, por lo que sus cifras tienden a revisarse.':d.tipo_comentario==='Reserva asociada a clúster'?'La reserva se evalúa en conjunto con otros campos del clúster, por lo que la cifra de un campo individual debe leerse con cautela.':'Está en evaluación: su estimación puede cambiar.'}`);
+  if(ob.length)o.push(aseS('Nota del archivo',aseL(ob)));
+  return o.join('');
+}
+function aseRiesgos(d){
+  const F=aseFacts(d),R=[];
+  if(d.pce_2p<=0)R.push('<b>Sin reserva 2P:</b> el campo solo aparece en 3P o está asociado a un clúster; su materialización es incierta.');
+  if(F.cert!=null&&F.cert<40)R.push(`<b>Incertidumbre de volumen:</b> solo ${nf(F.cert,0)} % de la reserva 3P está probada. El resultado depende de la confirmación mediante delimitación y desarrollo.`);
+  if(d.pce_1p>0&&d.probables>d.pce_1p)R.push(`<b>Reserva por convertir:</b> la reserva probable adicional (${nf(d.probables,1)} MMBPCE) supera a la probada (${nf(d.pce_1p,1)}). Aprovecharla exige inversión en pozos y ejecución sostenida.`);
+  if(d.ubicacion==='Marino'||d.ubicacion==='Aguas someras')R.push(`<b>Entorno ${d.ubicacion.toLowerCase()}:</b> el desarrollo costa afuera implica mayores costos de perforación e infraestructura, y mayor exposición a condiciones meteorológicas y logística marítima.`);
+  if(d.fluido_dominante==='Gas')R.push('<b>Perfil de gas:</b> el valor depende de la capacidad de procesamiento y transporte disponible, y del comportamiento del precio del gas.');
+  if(d.fluido_dominante==='Mixto')R.push('<b>Perfil mixto:</b> requiere manejo simultáneo de líquidos y gas; la relación gas-aceite condiciona las instalaciones superficiales.');
+  if(!(d.superficie_km2>0))R.push('<b>Dato faltante:</b> el archivo no trae superficie del campo; no se puede calcular densidad ni contrastar la extensión.');
+  const ws=F.ws;
+  if(!ws.length)R.push('<b>Sin pozos en el archivo cargado:</b> no es posible contrastar la reserva con la actividad de perforación del campo.');
+  else{const i=ws.filter(w=>w.cls==='Inactivo').length,a=ws.filter(w=>w.cls==='Activo').length;
+    if(i/ws.length>=.5)R.push(`<b>Alta proporción de pozos inactivos:</b> ${i} de ${ws.length} (${nf(i/ws.length*100,0)} %). Conviene revisar las causas de cierre (agotamiento, integridad, producción de agua, falta de infraestructura o decisión económica).`);
+    if(a===0)R.push('<b>Ningún pozo activo</b> en el archivo para este campo.');
+    const sd=ws.filter(w=>w.cls==='Sin dato').length;if(sd/ws.length>=.3)R.push(`<b>Calidad del dato de estado:</b> ${nf(sd/ws.length*100,0)} % de los pozos no tiene un estado interpretable.`)}
+  if(!R.length)R.push('No se identifican señales de riesgo elevadas con la información del archivo. Esto no descarta riesgos técnicos u operativos que el conjunto de datos no contiene.');
+  return aseS('Riesgos e incertidumbres identificados',aseL(R))+aseS('Alcance',aseP('El conjunto de datos no incluye producción, costos, precios ni informes de ingeniería de yacimientos; los riesgos listados se infieren de las reservas, la ubicación, el tipo de fluido y el estado de los pozos.'));
+}
+function aseComparar(d){
+  const F=aseFacts(d),s=[...F.same].sort((a,b)=>b.pce_2p-a.pce_2p),i=s.findIndex(x=>x.nombre===d.nombre);
+  const vec=s.slice(Math.max(0,i-2),i+3);
+  const f=x=>`<tr><td>${x.nombre===d.nombre?'<b>'+esc(x.nombre)+'</b>':esc(x.nombre)}</td><td>${nf(x.pce_2p,1)}</td><td>${x.certeza_1p_3p==null?'—':nf(x.certeza_1p_3p*100,0)+' %'}</td><td>${x.densidad_2p>0?nf(x.densidad_2p,2):'—'}</td></tr>`;
+  const med=rMedian(F.same.map(x=>x.pce_2p)),mc=rMedian(F.same.map(x=>x.certeza_1p_3p).filter(x=>x!=null));
+  return aseS(`Campos de tamaño comparable (${d.ubicacion.toLowerCase()})`,`<table class="asetb"><thead><tr><th>Campo</th><th>2P (MMBPCE)</th><th>Certeza 1P/3P</th><th>Densidad 2P</th></tr></thead><tbody>${vec.map(f).join('')}</tbody></table>`)+
+   aseS('Lectura',aseL([`Reserva 2P: ${nf(d.pce_2p,1)} MMBPCE frente a una mediana de ${nf(med,2)} entre los ${F.same.length} campos ${d.ubicacion.toLowerCase()}s; el campo se ubica en la posición <b>${F.pos}</b>.`,
+    F.cert!=null&&mc!=null?`Certeza ${nf(F.cert,0)} % frente a una mediana de ${nf(mc*100,0)} %: ${F.cert>mc*100+5?'mayor que la de su grupo':F.cert<mc*100-5?'menor que la de su grupo':'similar a la de su grupo'}.`:'',
+    d.densidad_2p>0&&F.medDen?`Densidad ${nf(d.densidad_2p,2)} MMBPCE/km² frente a una mediana de ${nf(F.medDen,2)}.`:''].filter(Boolean)));
+}
+function aseAcciones(d){
+  const F=aseFacts(d),A=[];
+  if(d.pce_2p<=0)A.push('Priorizar la evaluación del recurso: revisar la información geológica y de pozos disponible para definir si puede incorporarse como reserva.');
+  if(d.pce_1p>0&&d.probables>=d.pce_1p*.5)A.push('Diseñar un programa de pozos de delimitación y desarrollo orientado a convertir reserva probable en probada, con pruebas de producción que respalden la reclasificación.');
+  if(F.cert!=null&&F.cert<40)A.push('Revisar la interpretación del yacimiento (sísmica, petrofísica, contactos de fluidos) para estrechar el rango entre los escenarios 1P y 3P.');
+  if(d.posibles>0&&d.posibles>d.probables)A.push('Evaluar si la reserva posible justifica estudios adicionales; su volumen es mayor que el de la probable, lo que sugiere que parte del potencial está en áreas aún poco evaluadas.');
+  const ws=F.ws;
+  if(ws.length){const ina=ws.filter(w=>w.cls==='Inactivo');
+    if(ina.length)A.push(`Analizar los ${ina.length} pozos inactivos para clasificar cierres temporales (posibles candidatos a reparación o reactivación) y cierres definitivos (taponados o abandonados).`);
+    if(ws.some(w=>w.cls==='Sin dato'))A.push('Completar o validar el estado de los pozos sin dato interpretable antes de tomar decisiones con base en el conteo de pozos activos.')}
+  else A.push('Incorporar información de pozos del campo para contrastar la reserva con la actividad de perforación.');
+  if(d.fluido_dominante==='Gas')A.push('Verificar capacidad de procesamiento, compresión y transporte de gas asociada al campo.');
+  if(d.ubicacion!=='Terrestre')A.push('Considerar el efecto de los costos de infraestructura y logística costa afuera en la economía del desarrollo.');
+  A.push('Complementar el análisis con historiales de producción, costos y precios, que no forman parte de este conjunto de datos.');
+  return aseS('Líneas de revisión recomendadas',aseL(A));
+}
+/* ---- pozos ---- */
+function asePozoFacts(w){
+  const ws=wellsOf(w.campo),pc=fn=>{const v=ws.map(fn).filter(x=>x!=null),x=fn(w);return x==null||v.length<3?null:v.filter(y=>y<=x).length/v.length*100};
+  const yr=w.fini?+w.fini.slice(0,4):null;
+  return{ws,pcProf:pc(x=>x.prof),pcDias:pc(x=>x.dias),pcDesv:pc(x=>x.desv),medDias:rMedian(ws.map(x=>x.dias).filter(x=>x!=null)),medProf:rMedian(ws.map(x=>x.prof).filter(x=>x!=null)),edad:yr?new Date().getFullYear()-yr:null,pdesv:w.prof>0&&w.desv!=null?w.desv/w.prof*100:null};
+}
+function asePozo(w){
+  const F=asePozoFacts(w),o=[],L=[];
+  L.push(`Pozo <b>${esc(w.pozo)}</b>, campo <b>${esc(w.campo)}</b>${w.ent?`, ${esc(w.ent)}`:''}${w.ubic?` (${esc(w.ubic.toLowerCase())})`:''}.`);
+  if(w.clas)L.push(`Clasificación: <b>${esc(w.clas.toLowerCase())}</b>. ${/explor/i.test(w.clas)?'Un pozo exploratorio busca confirmar la presencia de hidrocarburos; su estado actual indica si el hallazgo derivó en explotación.':/desarr/i.test(w.clas)?'Un pozo de desarrollo se perfora en un campo ya descubierto con el fin de producirlo.':''}`);
+  o.push(aseS('Identificación',aseL(L)));
+  const T=[];
+  if(w.prof!=null){const c=w.prof>5000?'muy profundo':w.prof>2500?'profundo':'de profundidad moderada';
+    T.push(`Profundidad total: <b>${nf0(w.prof)} m</b>, pozo ${c}.${w.prof>5000?' A más de 5,000 m las condiciones de presión y temperatura suelen elevar la complejidad y el costo de la perforación.':''}${F.pcProf!=null?` Es más profundo que ${nf(F.pcProf,0)} % de los pozos del campo.`:''}`)}
+  if(w.profv!=null&&w.desv!=null){const p=F.pdesv;
+    T.push(`Profundidad vertical: ${nf0(w.profv)} m; diferencia con la profundidad total: <b>${nf0(w.desv)} m</b>${p!=null?` (${nf(p,1)} %)`:''}. ${p==null?'':p<3?'Trayectoria esencialmente vertical.':p<15?'Desviación moderada, consistente con un pozo direccional.':'Desviación alta: trayectoria fuertemente direccional, posiblemente de alto ángulo u horizontal.'}${w.tray?` El registro indica trayectoria «${esc(w.tray.toLowerCase())}».`:''}`)}
+  else if(w.tray)T.push(`Trayectoria registrada: ${esc(w.tray.toLowerCase())}.`);
+  if(w.dias!=null)T.push(`Perforación entre ${w.fini} y ${w.ffin}: <b>${nf0(w.dias)} días</b>${F.medDias?`; mediana del campo ${nf0(F.medDias)} días (${w.dias>F.medDias*1.5?'tiempo claramente superior a lo habitual, lo que puede reflejar mayor complejidad o eventos operativos, aunque el dato no permite determinarlo':w.dias<F.medDias*.7?'más rápido que lo habitual en el campo':'dentro de lo habitual en el campo'})`:''}.`);
+  else if(w.fini)T.push(`Inició perforación en ${w.fini}; no hay fecha de término para calcular su duración.`);
+  if(F.edad!=null)T.push(`Antigüedad aproximada: ${F.edad} años desde el inicio de perforación${F.edad>=30?'. En pozos de esta edad conviene verificar integridad mecánica y vigencia de la información técnica.':'.'}`);
+  if(T.length)o.push(aseS('Características técnicas',aseL(T)));
+  o.push(aseS('Estado operativo',aseP(aseEstadoTxt(w))));
+  const nd=[];if(w.prof==null)nd.push('profundidad total');if(!w.fini)nd.push('fecha de inicio');if(!w.clas)nd.push('clasificación');if(w.lat==null)nd.push('coordenadas');
+  if(nd.length)o.push(aseS('Datos faltantes',aseP(`El registro no incluye: ${nd.join(', ')}. Esto limita la interpretación.`)));
+  return o.join('');
+}
+function aseEstadoTxt(w){
+  const e=nk(w.estado).toLowerCase();
+  if(w.cls==='Activo')return`Según el registro, el pozo está <b>activo</b> (${esc(w.estado||'sin texto')}). El archivo no incluye producción, por lo que no puede evaluarse su desempeño ni su declinación; para ello se requiere el historial de producción.`;
+  if(w.cls==='Inactivo'){
+    if(/tapon|abandon/.test(e))return`El pozo está <b>inactivo</b> con estado «${esc(w.estado)}», lo que normalmente corresponde a un <b>cierre definitivo</b>. No es candidato a reactivación; su interés es de control de integridad y cumplimiento.`;
+    if(/seco|improduct|no product/.test(e))return`El pozo está <b>inactivo</b> («${esc(w.estado)}»): no resultó productor. Su valor está en la información geológica que aportó, no en la producción.`;
+    return`El pozo está <b>inactivo</b> («${esc(w.estado||'sin texto')}»). Si se trata de un cierre temporal, es candidato a evaluar una reparación o reactivación, previa revisión de la causa del cierre (agotamiento, integridad, agua, falta de infraestructura o decisión económica), dato que el archivo no contiene.`;}
+  return`El estado del pozo no pudo interpretarse${w.estado?` («${esc(w.estado)}»)`:' (campo vacío)'}. Se recomienda validarlo con la fuente antes de usarlo en un análisis.`;
+}
+function asePozoVsCampo(w){
+  const F=asePozoFacts(w);if(F.ws.length<3)return aseP('El campo tiene menos de tres pozos en el archivo; no hay base suficiente para una comparación.');
+  const L=[],c=(t,x,u,p,m)=>{if(x!=null&&p!=null)L.push(`${t}: <b>${nf0(x)} ${u}</b>, mayor o igual que ${nf(p,0)} % de los pozos del campo${m!=null?` (mediana ${nf0(m)} ${u})`:''}.`)};
+  c('Profundidad total',w.prof,'m',F.pcProf,F.medProf);c('Días de perforación',w.dias,'días',F.pcDias,F.medDias);c('Desviación entre profundidad total y vertical',w.desv,'m',F.pcDesv,null);
+  const a=F.ws.filter(x=>x.cls===w.cls).length;L.push(`Estado «${w.cls}»: lo comparten ${a} de ${F.ws.length} pozos del campo (${nf(a/F.ws.length*100,0)} %).`);
+  return aseS(`Posición del pozo ${esc(w.pozo)} entre los ${F.ws.length} pozos de ${esc(w.campo)}`,aseL(L))+aseP('Un percentil alto indica un valor mayor que el de la mayoría de los pozos del campo; no implica por sí solo un resultado bueno o malo.');
+}
+const ASE_TIT={resumen:'Resumen ejecutivo',solidez:'Solidez de la reserva',riesgos:'Riesgos e incertidumbres',comparar:'Comparación con campos similares',acciones:'Líneas de revisión',pozo:'Interpretación del pozo',pozovscampo:'Pozo frente al campo',estado:'Estado operativo y acciones posibles'};
+function aseRun(intent,pre){
+  const d=ase.campo;if(!d)return;
+  let b;
+  if(intent==='resumen')b=aseResumen(d);else if(intent==='solidez')b=aseSolidez(d);else if(intent==='riesgos')b=aseRiesgos(d);else if(intent==='comparar')b=aseComparar(d);else if(intent==='acciones')b=aseAcciones(d);
+  else if(!ase.pozo){b=aseP('Elige primero un pozo en la lista para esta consulta.')}
+  else if(intent==='pozo')b=asePozo(ase.pozo);else if(intent==='pozovscampo')b=asePozoVsCampo(ase.pozo);else if(intent==='estado')b=aseS('Estado operativo',aseP(aseEstadoTxt(ase.pozo)));
+  ase.intent=intent;ase.titulo=`${ASE_TIT[intent]} · ${intent.startsWith('poz')||intent==='estado'?ase.pozo.pozo+' ('+d.nombre+')':d.nombre}`;
+  ase.html=(pre?aseP(pre):'')+b;aseRender();
+}
+const ASE_STOP=new Set(['que','es','el','la','de','un','una','los','las','significa','define','definicion','y','en']);
+function aseRoute(q){
+  const s=nk(q).toLowerCase();if(!s.trim())return;
+  if(/que es|que significa|define|definicion|a que se refiere/.test(s)){
+    const w=s.split(/[^a-z0-9]+/).filter(x=>x.length>=2&&!ASE_STOP.has(x));
+    const g=GLOS.find(([t])=>{const tk=nk(t).toLowerCase().split(/[^a-z0-9]+/);return w.some(x=>tk.includes(x))});
+    if(g){ase.intent='glosario';ase.titulo='Definición: '+g[0];ase.html=aseP(esc(g[1]));aseRender();return}}
+  const p=!!ase.pozo;let it=null;
+  if(p&&/candidat|reactiv|repar|cerrad|inactiv|activ|estado|operand|operacion/.test(s))it='estado';
+  else if(p&&/demas|resto|campo|compar|percentil|posicion/.test(s))it='pozovscampo';
+  else if(p&&/pozo|profund|desvi|trayect|perfor|dias|antig|explorator|desarrollo|vertical|horizontal/.test(s))it='pozo';
+  else if(/compar|similar|parecid|vecin|ranking|posicion/.test(s))it='comparar';
+  else if(/riesgo|peligro|problema|debilidad|preocup/.test(s))it='riesgos';
+  else if(/recomien|que haria|siguiente|revisar|aumentar|confirmar|accion|estrategia|oportunidad|mejorar|que hago/.test(s))it='acciones';
+  else if(/solid|confiab|certeza|probad|reserva|incertidumbre|cuanto|seguro|volumen/.test(s))it='solidez';
+  else if(/resum|general|panorama|explic|cuentame|analiza|que opinas/.test(s))it='resumen';
+  if(!it){aseRun(p?'pozo':'resumen','No identifiqué una pregunta específica; presento la lectura general. Prueba con: «¿qué riesgos tiene?», «¿cómo se compara con campos similares?», «¿qué recomiendas revisar?»'+(p?' o «¿está activo el pozo?».':'.'));return}
+  aseRun(it);
+}
+function aseRender(){
+  const o=$('#as-out');
+  if(!ase.campo){o.innerHTML='<p style="color:var(--mute);margin:0">Elige un campo (y, si quieres, un pozo) y pulsa una pregunta o escribe la tuya.</p>';$('#as-actions').hidden=true;return}
+  if(!ase.html){o.innerHTML=`<p style="margin:0;color:var(--mute)">Campo seleccionado: <b>${esc(ase.campo.nombre)}</b>. Elige una pregunta sugerida o escribe la tuya.</p>`;$('#as-actions').hidden=true;return}
+  o.innerHTML=`<h3 style="margin:0 0 6px">${esc(ase.titulo)}</h3><div class="ase">${ase.html}</div><p class="mt" style="margin:10px 0 0">${ASE_AVISO}</p>`;
+  $('#as-actions').hidden=false;$('#as-add').textContent=ase.add?'Quitar del reporte PDF':'Agregar al reporte PDF';
+}
+function aseUi(){
+  if(!ase.campo&&state.sel)ase.campo=byName[state.sel];
+  $('#as-campo').value=ase.campo?ase.campo.nombre:'';
+  const ws=ase.campo?[...wellsOf(ase.campo.nombre)].sort((a,b)=>String(a.pozo).localeCompare(String(b.pozo))):[];
+  $('#as-pozo').innerHTML=`<option value="">${ase.campo?(ws.length?'(sin pozo: análisis del campo)':'(el campo no tiene pozos en el archivo)'):'(elige primero un campo)'}</option>`+ws.slice(0,2000).map(w=>`<option value="${w.id}">${esc(w.pozo)} · ${w.cls}</option>`).join('');
+  $('#as-pozo').value=ase.pozo?String(ase.pozo.id):'';
+  const qs=ase.campo?ASE_Q.campo.concat(ase.pozo?ASE_Q.pozo:[]):[];
+  $('#as-chips').innerHTML=qs.map(([k,t])=>`<button type="button" class="chip" data-i="${k}" aria-pressed="${ase.intent===k}">${t}</button>`).join('');
+  aseRender();
+}
+$('#as-campo').addEventListener('change',e=>{const d=byNk[nk(e.target.value)];if((d||null)===ase.campo)return;ase.campo=d||null;ase.pozo=null;ase.html='';ase.intent=null;ase.add=false;aseUi()});
+$('#as-pozo').addEventListener('change',e=>{ase.pozo=e.target.value===''?null:wells[+e.target.value];ase.html='';ase.intent=null;ase.add=false;aseUi()});
+$('#as-chips').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b){aseRun(b.dataset.i);aseUi()}});
+$('#as-form').addEventListener('submit',e=>{e.preventDefault();if(!ase.campo){aseRender();return}aseRoute($('#as-q').value);aseUi()});
+$('#as-add').onclick=()=>{ase.add=!ase.add;aseRender();if(tab==='reporte')renderReport()};
+$('#as-rep').onclick=()=>{ase.add=true;showTab('reporte',true)};
+
 /* ---------- pestañas ---------- */
-const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['reporte','Reporte PDF'],['glosario','Glosario'],['ayuda','Ayuda']];
+const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['reporte','Reporte PDF'],['asesor','Asesor técnico'],['glosario','Glosario'],['ayuda','Ayuda']];
 let tab='resumen';
 function showTab(t,focus){
   tab=t;
@@ -1020,6 +1240,7 @@ function showTab(t,focus){
   $$('section.tp').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
   if(t==='mapa')renderMap();
   if(t==='reporte')renderReport();
+  if(t==='asesor')aseUi();
   if(focus)$('#tab-'+t).focus();
 }
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b)showTab(b.dataset.t)});
@@ -1050,7 +1271,7 @@ $('#dlcsv').onclick=()=>{const F=filtered(),keys=Object.keys(DATA[0]);const q=v=
 $('#dljson').onclick=()=>download('campos_filtrados.json',JSON.stringify(filtered(),null,1),'application/json');
 document.addEventListener('keydown',e=>{
   const t=e.target;if(t.matches('input,select,textarea'))return;if(e.ctrlKey||e.metaKey||e.altKey)return;
-  if(/^[1-9]$/.test(e.key)){showTab(TABS[+e.key-1][0],true);return}
+  if(/^[0-9]$/.test(e.key)){showTab(TABS[e.key==='0'?9:+e.key-1][0],true);return}
   if(e.key==='p'||e.key==='P'){const ks=Object.keys(CATS);state.cat=ks[(ks.indexOf(state.cat)+1)%3];renderAll()}
   else if(e.key==='u'||e.key==='U'){const cur=state.ub.size===1?[...state.ub][0]:null;const order=[null,...UBS];const nx=order[(order.indexOf(cur)+1)%order.length];state.ub.clear();if(nx)state.ub.add(nx);renderAll()}
   else if(e.key==='/'){e.preventDefault();$('#q').focus()}
