@@ -200,6 +200,13 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <button class="btn" id="dljson">Descargar JSON filtrado</button>
     <span id="tcount" style="color:var(--mute);font-size:13px"></span>
   </div>
+  <div class="card" id="rg" style="margin-bottom:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+    <label style="font-size:13px">Filtrar por rango numérico<br><select id="rg-k" style="min-width:210px"></select></label>
+    <label style="font-size:13px">Mínimo<br><input type="number" id="rg-min" step="any" style="width:120px" placeholder="sin mínimo"></label>
+    <label style="font-size:13px">Máximo<br><input type="number" id="rg-max" step="any" style="width:120px" placeholder="sin máximo"></label>
+    <button class="btn" id="rg-clr" type="button">Quitar rango</button>
+    <span id="rg-hint" style="font-size:12.5px;color:var(--mute);flex-basis:100%"></span>
+  </div>
   <div class="tw"><table id="tbl"><thead></thead><tbody></tbody></table></div>
   <p class="sub" style="color:var(--mute);font-size:12.5px">Encabezados = ordenar (Enter). Filas: <kbd>↑</kbd><kbd>↓</kbd> para moverse, <kbd>Enter</kbd> para seleccionar.</p>
 </section>
@@ -432,12 +439,15 @@ const UBS=['Terrestre','Marino','Aguas someras'];
 const UBC={'Terrestre':'var(--terr)','Marino':'var(--mar)','Aguas someras':'var(--som)'};
 const FLC={'Aceite':'var(--aceite)','Gas':'var(--gas)','Mixto':'var(--mixto)','Sin reserva':'var(--line)'};
 const TAMS=['Sin reserva 2P','< 1','1 - 10','10 - 50','50 - 200','> 200'];
-const state={cat:'2p',ub:new Set(),q:'',sel:null,topN:15,tam:null,flu:null,tc:null,sort:{k:'rank_2p',dir:1},cmp:[],wst:null,wtx:null,metric:'prof'};
+const state={cat:'2p',ub:new Set(),q:'',sel:null,topN:15,tam:null,flu:null,tc:null,rng:null,sort:{k:'rank_2p',dir:1},cmp:[],wst:null,wtx:null,metric:'prof'};
 const V=(d,c=state.cat)=>d['pce_'+c]||0;
 const byName=Object.fromEntries(DATA.map(d=>[d.nombre,d]));
 const nk=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().trim().replace(/\s+/g,' ');
 const byNk=Object.fromEntries(DATA.map(d=>[nk(d.nombre),d]));
 
+const RNG=[['pce_2p','Reserva 2P (MMBPCE)'],['pce_1p','Reserva 1P (MMBPCE)'],['pce_3p','Reserva 3P (MMBPCE)'],['superficie_km2','Superficie (km²)'],['certeza','Certeza 1P/3P (%)'],['densidad_2p','Densidad 2P (MMBPCE/km²)'],['n_pozos','Número de pozos']];
+const rv=(d,k)=>{const v=k==='certeza'?(d.certeza_1p_3p==null?null:d.certeza_1p_3p*100):d[k];return v==null||isNaN(v)?null:+v};
+function rngOk(d){const g=state.rng;if(!g)return true;const v=rv(d,g.k);return v!=null&&(g.min==null||v>=g.min)&&(g.max==null||v<=g.max)}
 function filtered(skip){
   const q=state.q.trim().toUpperCase();
   return DATA.filter(d=>
@@ -445,7 +455,8 @@ function filtered(skip){
     (!q||d.nombre.includes(q)) &&
     (skip==='tam'||!state.tam||d.tamano_2p===state.tam) &&
     (skip==='flu'||!state.flu||d.fluido_dominante===state.flu) &&
-    (skip==='tc'||!state.tc||d.tipo_comentario===state.tc));
+    (skip==='tc'||!state.tc||d.tipo_comentario===state.tc) &&
+    rngOk(d));
 }
 
 /* ---------- motor de gráficas con teclado ---------- */
@@ -596,7 +607,26 @@ function pareto(id,rows,{W=980,H=300}={}){
 function selectField(n){state.sel=state.sel===n?null:n;renderAll()}
 function toggleUb(u){state.ub.has(u)?state.ub.delete(u):state.ub.add(u);renderAll()}
 function toggleKey(k,v){state[k]=state[k]===v?null:v;renderAll()}
-function resetAll(){state.ub.clear();state.q='';state.sel=null;state.tam=null;state.flu=null;state.tc=null;state.wst=null;state.wtx=null;$('#q').value='';renderAll()}
+function resetAll(){state.ub.clear();state.q='';state.sel=null;state.tam=null;state.flu=null;state.tc=null;state.rng=null;rngSync();state.wst=null;state.wtx=null;$('#q').value='';renderAll()}
+
+/* ---------- filtro por rango numérico ---------- */
+function rngSync(){
+  const k=$('#rg-k');if(!k)return;
+  if(!k.options.length)k.innerHTML=RNG.map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
+  const g=state.rng;if(g)k.value=g.k;
+  $('#rg-min').value=g&&g.min!=null?g.min:'';$('#rg-max').value=g&&g.max!=null?g.max:'';
+  const v=DATA.map(d=>rv(d,k.value)).filter(x=>x!=null);
+  $('#rg-hint').textContent=v.length?`Rango en los datos: de ${nf(Math.min(...v),2)} a ${nf(Math.max(...v),2)} (${v.length} de ${DATA.length} campos tienen este dato; los demás se excluyen al filtrar). Se combina con los demás filtros.`:'';
+}
+function rngApply(){
+  const a=$('#rg-min').value,b=$('#rg-max').value,mn=a===''?null:+a,mx=b===''?null:+b;
+  state.rng=mn==null&&mx==null?null:{k:$('#rg-k').value,min:mn,max:mx};
+  if(mn!=null&&mx!=null&&mn>mx){$('#rg-hint').textContent='El mínimo es mayor que el máximo: no habrá resultados.'}else rngSync();
+  renderAll();
+}
+['#rg-min','#rg-max'].forEach(s=>$(s).addEventListener('input',rngApply));
+$('#rg-k').addEventListener('change',()=>{$('#rg-min').value='';$('#rg-max').value='';state.rng=null;rngSync();renderAll()});
+$('#rg-clr').onclick=()=>{state.rng=null;rngSync();renderAll()};
 
 /* ---------- render ---------- */
 function renderBar(){
@@ -608,6 +638,7 @@ function renderBar(){
   if(state.tam)f.push([`Tamaño: ${state.tam}`,()=>state.tam=null]);
   if(state.flu)f.push([`Fluido: ${state.flu}`,()=>state.flu=null]);
   if(state.tc)f.push([`Comentario: ${state.tc}`,()=>state.tc=null]);
+  if(state.rng){const g=state.rng,n=RNG.find(x=>x[0]===g.k)[1];f.push([`${n}: ${g.min==null?'':'≥ '+nf(g.min,2)}${g.min!=null&&g.max!=null?' y ':''}${g.max==null?'':'≤ '+nf(g.max,2)}`,()=>{state.rng=null;rngSync()}])}
   const box=$('#filters');box.innerHTML='';
   f.forEach(([t,fn])=>{const b=document.createElement('button');b.className='chip';b.textContent=t+'  ✕';b.setAttribute('aria-label','Quitar filtro '+t);b.onclick=()=>{fn();renderAll()};box.appendChild(b)});
 }
@@ -1413,7 +1444,7 @@ function renderAll(){
   if(tab==='mapa')renderMap();
   if(tab==='reporte')renderReport();
 }
-indexWells();fillDatalist();renderQual();showTab('resumen');renderAll();
+indexWells();fillDatalist();renderQual();rngSync();showTab('resumen');renderAll();
 </script>
 </body>
 </html>
