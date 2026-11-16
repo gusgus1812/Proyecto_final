@@ -217,7 +217,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <label for="pzcampo">Campo</label>
     <input list="dl-campos" id="pzcampo" placeholder="Escribe o elige un campo" style="min-width:240px">
     <datalist id="dl-campos"></datalist>
-    <label>Cargar pozos (CSV) <input type="file" id="fpozo2" accept=".csv"></label>
+    <label>Cargar pozos (CSV o TXT) <input type="file" id="fpozo2" accept=".csv,.txt,.tsv"></label>
     <button class="btn" id="pzclr">Borrar pozos cargados</button>
     <button class="btn" id="pzall">Ver todos los campos</button>
   </div>
@@ -238,8 +238,8 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 
 <section class="tp" id="t-mapa" role="tabpanel">
     <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;align-items:center;font-size:13px">
-    <label>Coordenadas de campos (CSV <code>nombre,lat,lon</code>) <input type="file" id="fcamp" accept=".csv"></label>
-    <label>Pozos (CSV <code>pozo,lat,lon,campo</code>) <input type="file" id="fpozo" accept=".csv"></label>
+    <label>Coordenadas de campos (CSV <code>nombre,lat,lon</code>) <input type="file" id="fcamp" accept=".csv,.txt,.tsv"></label>
+    <label>Pozos (CSV <code>pozo,lat,lon,campo</code>) <input type="file" id="fpozo" accept=".csv,.txt,.tsv"></label>
     <button class="btn" id="clrmap">Borrar mis archivos cargados</button>
     <label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="chkpol" checked> Superficies</label><span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
   </div>
@@ -675,10 +675,11 @@ function saveStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}
 let coords=loadStore('mc_coords',null)||COORDS_INI;
 function parseCsv(txt){
   txt=txt.replace(/^﻿/,'');const rows=[];let row=[],cur='',q=false;
+  const first=txt.split(/\r?\n/,1)[0],D=[',','\t','|',';'].map(d=>[d,first.split(d).length]).sort((a,b)=>b[1]-a[1])[0][0];
   for(let i=0;i<txt.length;i++){const c=txt[i];
     if(q){if(c==='"'){if(txt[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
     else if(c==='"')q=true;
-    else if(c===','){row.push(cur);cur=''}
+    else if(c===D){row.push(cur);cur=''}
     else if(c==='\n'||c==='\r'){if(c==='\r'&&txt[i+1]==='\n')i++;row.push(cur);cur='';if(row.some(x=>x!==''))rows.push(row);row=[]}
     else cur+=c}
   if(cur!==''||row.length){row.push(cur);if(row.some(x=>x!==''))rows.push(row)}
