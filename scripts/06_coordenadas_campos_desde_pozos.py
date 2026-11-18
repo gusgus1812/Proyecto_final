@@ -14,7 +14,6 @@ Uso:
     python3 scripts/06_coordenadas_campos_desde_pozos.py --entrada data/external/pozos.csv --salida mis_campos.csv
 
 Requiere haber corrido antes scripts/03_normalizar_pozos.py (genera data/external/pozos.csv).
-Los pozos de demostracion (demo=1) se ignoran, salvo con --incluir-demo.
 """
 import argparse
 import csv
@@ -39,7 +38,6 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--entrada", type=Path, default=ENTRADA)
     ap.add_argument("--salida", type=Path, default=SALIDA)
-    ap.add_argument("--incluir-demo", action="store_true", help="incluye pozos ficticios (solo para pruebas)")
     a = ap.parse_args()
 
     if not a.entrada.exists():
@@ -49,12 +47,8 @@ def main():
         oficiales = {clave(r["nombre"]): r["nombre"] for r in csv.DictReader(f)}
 
     pts = {}
-    ignorados = 0
     with open(a.entrada, encoding="utf-8-sig", newline="") as f:
         for r in csv.DictReader(f):
-            if not a.incluir_demo and str(r.get("demo", "")).strip() in ("1", "True", "true"):
-                ignorados += 1
-                continue
             try:
                 lat, lon = float(r["lat"]), float(r["lon"])
             except (KeyError, ValueError):
@@ -72,8 +66,7 @@ def main():
         filas.append({"nombre": nombre, "lat": round(lat, 5), "lon": round(lon, 5),
                       "nota": f"mediana de {len(p)} pozos; extension ~{max(alto, ancho):.0f} km", "_n": len(p)})
     if not filas:
-        raise SystemExit("Ningun pozo con coordenadas pertenece a los 477 campos"
-                         + (f" ({ignorados} pozos de demostracion ignorados; usa --incluir-demo solo para probar)" if ignorados else "") + ".")
+        raise SystemExit("Ningun pozo con coordenadas pertenece a los 477 campos.")
     filas.sort(key=lambda x: -x["_n"])
     a.salida.parent.mkdir(parents=True, exist_ok=True)
     with open(a.salida, "w", newline="", encoding="utf-8-sig") as f:

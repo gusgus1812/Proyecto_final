@@ -43,6 +43,3 @@ Si ves estados mal clasificados, ajusta `statusClass()` en `web/template.html` y
 
 ## Qué se puede comparar
 Hasta 6 pozos lado a lado: estado, clasificación, entidad, capa, trayectoria, fechas, **días de perforación**, **profundidad total**, **profundidad vertical** y **desviación** (total − vertical), con el porcentaje frente al promedio de su campo. El mapa no trae producción por pozo, así que el dashboard no la muestra.
-
-## Datos de demostración
-`data/demo/pozos_DEMO_ficticio.csv` (lo crea `scripts/04_generar_demo_pozos.py`) tiene pozos **ficticios** con el mismo esquema (columna `demo=1`) en 7 campos, solo para probar la interfaz. El dashboard muestra una advertencia cuando están cargados. Cárgalo desde la pestaña Pozos.

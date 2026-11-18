@@ -838,8 +838,7 @@ function indexWells(){
       lat:numv(pick(o,['lat','latitud','latitude'])),lon:numv(pick(o,['lon','lng','longitud','longitude'])),
       estado:est,cls:statusClass(est),tipoh:pick(o,['tipo_hidrocarburo','tipo de hidrocarburo','tipo_de_hi','fluido','hidrocarburo']),
       fini:fi,ffin:ff,dias:dd!=null&&dd>=0?dd:null,prof,profv:pv,desv:prof!=null&&pv!=null?prof-pv:null,
-      tray:pick(o,['trayectoria','trayectori']),disp:pick(o,['disponible']),capa:pick(o,['capa','pozos']),
-      demo:/^(1|si|true|demo)$/i.test(pick(o,['demo']))}});
+      tray:pick(o,['trayectoria','trayectori']),disp:pick(o,['disponible']),capa:pick(o,['capa','pozos'])}});
   wellsBy={};wells.forEach(w=>{(wellsBy[w.campo]=wellsBy[w.campo]||[]).push(w)});
   DATA.forEach(d=>{const a=wellsBy[nk(d.nombre)]||[];const h=wells.length>0;
     d.n_pozos=h?a.length:null;d.n_act=h?a.filter(w=>w.cls==='Activo').length:null;d.n_inact=h?a.filter(w=>w.cls==='Inactivo').length:null});
@@ -872,7 +871,7 @@ const PAL=['#0f6b5c','#2b6cb0','#c98a0b','#8b5a2b','#b0558a','#5aa7d6','#7a8f3a'
 function renderPozos(F){
   const has=wells.length>0,sel=state.sel;
   const con=new Set(wells.map(w=>w.campo).filter(c=>byNk[c])).size;
-  $('#pz-banner').innerHTML=has?`<b>${nf0(wells.length)}</b> pozos cargados, ${con} de los ${DATA.length} campos con reserva tienen al menos uno (${nf(con/DATA.length*100,0)} %).${wells.some(w=>w.demo)?' <b>⚠ Incluye datos de DEMOSTRACIÓN ficticios; no son pozos reales.</b>':''} Elige un campo abajo (o en cualquier gráfica) para ver sus pozos.`
+  $('#pz-banner').innerHTML=has?`<b>${nf0(wells.length)}</b> pozos cargados, ${con} de los ${DATA.length} campos con reserva tienen al menos uno (${nf(con/DATA.length*100,0)} %). Elige un campo abajo (o en cualquier gráfica) para ver sus pozos.`
    :`<b>Aún no hay pozos cargados.</b> El mapa de la CNH sí tiene la ficha de cada pozo (campo, entidad, clasificación, estado actual, profundidades, fechas…). Descárgala con <code>python3 scripts/05_descargar_pozos_arcgis.py</code>, normalízala con <code>03_normalizar_pozos.py</code> y regenera con <code>02_build_web.py</code>; o carga aquí un CSV con el formato de <code>data/external/pozos_plantilla.csv</code>. Ver <code>docs/pozos.md</code>.`;
   if(document.activeElement!==$('#pzcampo'))$('#pzcampo').value=sel||'';
   const scope=scopeWells(F),cnt=c=>scope.filter(w=>w.cls===c).length,A=cnt('Activo'),I=cnt('Inactivo'),N=cnt('Sin dato');

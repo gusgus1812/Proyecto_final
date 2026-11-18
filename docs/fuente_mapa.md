@@ -5,7 +5,7 @@ Sitio: https://mapa-hidrocarburos.energia.gob.mx/ (CNH/SENER). La página princi
 
 ## Dónde se ubican los campos
 1. **Automático (recomendado):** al cargar los pozos, el mapa coloca cada campo en la **mediana de las coordenadas de sus pozos**. No necesitas ningún archivo extra y cubre todos los campos que tengan pozos.
-2. **Guardarlo en CSV:** `python3 scripts/06_coordenadas_campos_desde_pozos.py` escribe ese cálculo en `data/external/coordenadas_campos.csv` (nombre, lat, lon, nota con el número de pozos y la extensión aproximada). Ignora los pozos de demostración.
+2. **Guardarlo en CSV:** `python3 scripts/06_coordenadas_campos_desde_pozos.py` escribe ese cálculo en `data/external/coordenadas_campos.csv` (nombre, lat, lon, nota con el número de pozos y la extensión aproximada). 
 3. **Sin pozos:** el archivo incluido tiene 7 posiciones aproximadas puestas de memoria (±50 km o más) solo para probar el mapa. Con pozos cargados se reemplazan solas.
 Limitación: el centro de los pozos es un **punto**, no el contorno real del campo.
 
