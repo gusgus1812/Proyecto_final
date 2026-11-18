@@ -1,0 +1,11 @@
+# Normaliza los saltos de línea: en el repositorio siempre LF.
+# Evita que Windows (CRLF) marque archivos como modificados sin cambios reales.
+* text=auto eol=lf
+
+# Archivos binarios: no tocar
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.pdf  binary
+*.db   binary
+*.zip  binary
