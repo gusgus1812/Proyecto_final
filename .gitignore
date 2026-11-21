@@ -3,5 +3,3 @@ __pycache__/
 .venv/
 .DS_Store
 *.zip
-# descarga cruda de pozos (puede pesar mucho; se regenera con scripts/05)
-data/external/pozos_arcgis_crudo.csv

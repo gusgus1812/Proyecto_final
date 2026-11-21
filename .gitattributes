@@ -9,3 +9,7 @@
 *.pdf  binary
 *.db   binary
 *.zip  binary
+
+# Datos originales: se guardan byte por byte, sin convertir saltos de línea
+data/raw/*.csv -text
+data/external/pozos_arcgis_crudo.csv -text
