@@ -4,7 +4,7 @@ POZA RICA,20.51326,-97.4216,mediana de 800 pozos; extension ~21 km
 EBANO CHAPACAO,22.26881,-98.28806,mediana de 796 pozos; extension ~583 km
 MAGALLANES TUCAN PAJONAL,18.15157,-93.88446,mediana de 746 pozos; extension ~16 km
 CACALILAO,22.16074,-98.21676,mediana de 644 pozos; extension ~28 km
-PANUCO,22.07044,-98.19591,mediana de 618 pozos; extension ~500 km
+PANUCO,22.07044,-98.19586,mediana de 619 pozos; extension ~593 km
 CULEBRA,25.93631,-99.04777,mediana de 608 pozos; extension ~30 km
 SAMARIA,17.99495,-93.09519,mediana de 592 pozos; extension ~67 km
 FURBERO,20.36268,-97.44916,mediana de 586 pozos; extension ~25 km
@@ -44,13 +44,13 @@ PALMITO,25.44936,-98.8648,mediana de 140 pozos; extension ~15 km
 COMITAS,25.74916,-98.60445,mediana de 137 pozos; extension ~12 km
 ESCOBAL,20.46788,-97.68554,mediana de 137 pozos; extension ~10 km
 TOTECO CERRO AZUL,21.1965,-97.73932,mediana de 132 pozos; extension ~10 km
+COYULA,20.55901,-97.74174,mediana de 131 pozos; extension ~737 km
 COYOL,20.72811,-97.83485,mediana de 131 pozos; extension ~18 km
 ABKATUN,19.29605,-92.18118,mediana de 130 pozos; extension ~22 km
 MONTERREY,25.85239,-98.25085,mediana de 130 pozos; extension ~431 km
-COYULA,20.56032,-97.74557,mediana de 130 pozos; extension ~737 km
+CORCOVADO,22.30276,-98.1908,mediana de 129 pozos; extension ~88 km
 BENAVIDES,25.59258,-98.94511,mediana de 129 pozos; extension ~19 km
 BLASILLO,18.04829,-94.04802,mediana de 129 pozos; extension ~6 km
-CORCOVADO,22.30215,-98.19082,mediana de 128 pozos; extension ~88 km
 JOSE COLOMO,17.96223,-92.46915,mediana de 127 pozos; extension ~14 km
 MOJARRENAS,25.90874,-98.94562,mediana de 120 pozos; extension ~11 km
 SALINAS BARCO CARACOL,22.17972,-98.10295,mediana de 120 pozos; extension ~20 km
@@ -134,9 +134,9 @@ GIGANTE,26.60176,-99.35805,mediana de 41 pozos; extension ~17 km
 GUARICHO,17.92575,-93.77478,mediana de 41 pozos; extension ~10 km
 CAUCHY,18.14923,-95.74476,mediana de 41 pozos; extension ~28 km
 TINTAL,18.19679,-93.14362,mediana de 40 pozos; extension ~4 km
+TEPETATE NORTE CHINAMPA,21.41499,-97.66723,mediana de 40 pozos; extension ~381 km
 PALO BLANCO,20.8818,-97.79501,mediana de 40 pozos; extension ~14 km
 CABEZA,25.47041,-98.76639,mediana de 39 pozos; extension ~14 km
-TEPETATE NORTE CHINAMPA,21.41569,-97.66746,mediana de 39 pozos; extension ~9 km
 AGUACATE,21.32716,-97.57937,mediana de 39 pozos; extension ~9 km
 ANGOSTURA,18.64408,-96.32682,mediana de 39 pozos; extension ~6 km
 PAREDON,17.92631,-93.39579,mediana de 38 pozos; extension ~11 km
@@ -273,6 +273,7 @@ MOZUTLA,20.61922,-97.37677,mediana de 12 pozos; extension ~1 km
 GRANADITAS,25.32764,-98.44825,mediana de 11 pozos; extension ~2 km
 MERCED,27.5877,-101.17805,mediana de 11 pozos; extension ~7 km
 HIDALGO,27.89301,-99.97244,mediana de 11 pozos; extension ~17 km
+TRAPICHE,26.05708,-98.64692,mediana de 11 pozos; extension ~898 km
 GARUFA,25.91267,-98.54254,mediana de 11 pozos; extension ~1 km
 TUPILCO PROFUNDO,18.35197,-93.36751,mediana de 11 pozos; extension ~4 km
 PLATANAL,17.93919,-93.06004,mediana de 11 pozos; extension ~6 km
@@ -284,7 +285,6 @@ GRAN MORELOS,20.28147,-97.07319,mediana de 11 pozos; extension ~3 km
 TECA,18.44392,-94.13649,mediana de 10 pozos; extension ~5 km
 EXPLORADOR,26.71311,-99.2743,mediana de 10 pozos; extension ~4 km
 PALEOARCOS,26.55337,-99.18891,mediana de 10 pozos; extension ~1 km
-TRAPICHE,26.0581,-98.64781,mediana de 10 pozos; extension ~4 km
 ECLIPSE,26.1257,-98.442,mediana de 10 pozos; extension ~2 km
 XICALANGO,18.611,-91.97094,mediana de 10 pozos; extension ~9 km
 CANTEMOC,18.13276,-92.29972,mediana de 10 pozos; extension ~3 km
@@ -377,6 +377,7 @@ KIX,18.84538,-92.42028,mediana de 3 pozos; extension ~0 km
 TEPOZAN,26.0046,-98.66575,mediana de 3 pozos; extension ~0 km
 PATLACHE,26.15543,-98.4466,mediana de 3 pozos; extension ~1 km
 VACAS,28.82763,-100.74698,mediana de 3 pozos; extension ~3 km
+RIBERENO,18.64889,-92.43685,mediana de 3 pozos; extension ~828 km
 BRAGADO,25.6588,-98.64682,mediana de 3 pozos; extension ~1 km
 GRANDE,26.47141,-99.34785,mediana de 3 pozos; extension ~0 km
 NUEVOS LIRIOS,18.38062,-92.36737,mediana de 3 pozos; extension ~2 km
@@ -403,7 +404,6 @@ LEYENDA,25.72239,-98.54367,mediana de 2 pozos; extension ~2 km
 PAME,26.03871,-98.45854,mediana de 2 pozos; extension ~2 km
 ALGODONERO,25.55204,-98.71382,mediana de 2 pozos; extension ~3 km
 FILADELFIA,26.87121,-99.43593,mediana de 2 pozos; extension ~1 km
-RIBERENO,22.37768,-95.40282,mediana de 2 pozos; extension ~828 km
 LAGUNA ALEGRE,18.39338,-92.16639,mediana de 2 pozos; extension ~3 km
 ZARAGOZA,18.15652,-92.24972,mediana de 2 pozos; extension ~1 km
 CUPACHE,18.18528,-93.18969,mediana de 2 pozos; extension ~1 km

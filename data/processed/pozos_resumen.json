@@ -1,18 +1,21 @@
 {
-  "pozos": 34132,
+  "filas_entrada": 34147,
+  "duplicados_exactos_eliminados": 0,
+  "filas_con_mismo_nombre_y_campo": 30,
+  "pozos": 34147,
   "campos_con_pozos": 451,
   "campos_total": 477,
   "por_estado": {
-    "Inactivo": 27223,
+    "Inactivo": 27238,
     "Activo": 6886,
     "Sin dato": 23
   },
   "estados_texto_original": {
-    "INACTIVO": 15054,
-    "CERRADO": 10172,
+    "INACTIVO": 15059,
+    "CERRADO": 10177,
     "PRODUCTOR": 6784,
-    "TAPONAMIENTO PERMANENTE": 1729,
-    "TAPONAMIENTO TEMPORAL": 201,
+    "TAPONAMIENTO PERMANENTE": 1733,
+    "TAPONAMIENTO TEMPORAL": 202,
     "INYECTOR PARA RECUPERACION SECUNDARIA O MEJORADA": 65,
     "CERRADO ESPERANDO INSTALACIONES DE PRODUCCION": 43,
     "OPERANDO": 29,
@@ -24,7 +27,7 @@
     "ESPERANDO ABANDONO": 2,
     "EN CONSTRUCCION": 1
   },
-  "pozos_sin_campo_reconocido": 7525,
+  "pozos_sin_campo_reconocido": 7534,
   "coordenadas_descartadas": 0,
   "sin_coordenadas": 0,
   "sin_fecha_inicio": 1664

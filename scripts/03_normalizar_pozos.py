@@ -49,7 +49,6 @@ ALIAS = {
     "capa": ["capa", "pozos"],
     "lat": ["lat", "latitud", "latitude", "y"],
     "lon": ["lon", "lng", "longitud", "longitude", "x"],
-    "demo": ["demo"],
 }
 CANON = list(ALIAS)
 MESES = {"ENE": 1, "FEB": 2, "MAR": 3, "ABR": 4, "MAY": 5, "JUN": 6, "JUL": 7, "AGO": 8, "SEP": 9, "SET": 9,
@@ -162,7 +161,12 @@ def main():
         df[c] = numero(df[c])
     fuera = (df["lat"].notna() & ~df["lat"].between(14, 33.5)) | (df["lon"].notna() & ~df["lon"].between(-120, -84))
     df.loc[fuera, ["lat", "lon"]] = pd.NA  # coordenadas imposibles para Mexico
-    df = df.drop_duplicates(subset=["pozo", "campo"])
+    # Solo se eliminan filas identicas en todas las columnas. Dos pozos con el mismo nombre y campo
+    # pero distintas coordenadas, fechas o profundidades son pozos distintos y se conservan.
+    filas_entrada = len(df)
+    df = df.drop_duplicates()
+    duplicados_exactos = filas_entrada - len(df)
+    mismo_nombre_y_campo = int(df.duplicated(subset=["pozo", "campo"], keep=False).sum())
     sin = ~df["campo"].isin(por_clave)
 
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
@@ -186,6 +190,9 @@ def main():
     huerf[["pozo", "campo", "sugerencia", "similitud"]].to_csv(PROC / "pozos_sin_campo.csv", index=False, encoding="utf-8-sig")
 
     resumen = {
+        "filas_entrada": int(filas_entrada),
+        "duplicados_exactos_eliminados": int(duplicados_exactos),
+        "filas_con_mismo_nombre_y_campo": mismo_nombre_y_campo,        
         "pozos": int(len(df)),
         "campos_con_pozos": int((cob["n_pozos"] > 0).sum()),
         "campos_total": int(len(campos)),
