@@ -249,6 +249,14 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 
 <section class="tp" id="t-calidad" role="tabpanel">
   <div class="grid">
+    <div class="card" style="grid-column:1/-1">
+      <h2>Exploración de los datos</h2>
+      <label class="noprint">Conjunto de datos <select id="dx-set"><option value="campos">Reservas por campo</option><option value="pozos">Pozos</option></select></label>
+      <p id="dx-info" style="margin:8px 0"></p>
+      <div class="tw" style="max-height:340px"><table id="dx-dic"></table></div>
+      <h3 style="margin:14px 0 6px;font-size:14px">Vista previa (primeras 10 filas)</h3>
+      <div class="tw" style="max-height:300px"><table id="dx-prev"></table></div>
+    </div>
     <div class="card"><h2>Calidad de los datos</h2><ul class="hall" id="qual"></ul></div>
     <div class="card"><h2>Comentarios del archivo</h2><div class="tw" style="max-height:420px"><table id="tcom"><thead><tr><th>#</th><th>Campo</th><th>Ubic.</th><th>2P</th><th>Comentario</th></tr></thead><tbody></tbody></table></div></div>
   </div>
@@ -738,6 +746,33 @@ function renderTable(F){
   $('#tbl tbody').innerHTML=rows.map(d=>`<tr tabindex="0" data-n="${esc(d.nombre)}" class="${d.nombre===state.sel?'sel':''}"><td>${d.rank_2p}</td><td>${esc(d.nombre)}</td><td>${d.ubicacion}</td><td>${d.superficie_km2==null?'—':nf(d.superficie_km2,2)}</td><td>${nf(d.pce_1p,2)}</td><td>${nf(d.pce_2p,2)}</td><td>${nf(d.pce_3p,2)}</td><td>${d.certeza_1p_3p==null?'—':nf(d.certeza_1p_3p*100,0)+' %'}</td><td>${nf(d.crudo_2p,2)}</td><td>${nf(d.gas_2p,2)}</td><td>${d.n_pozos==null?'—':d.n_pozos}</td><td>${d.n_act==null?'—':d.n_act}</td><td>${d.fluido_dominante}</td><td class="cm" title="${esc(d.comentario)}">${esc(d.comentario)}</td></tr>`).join('');
   $('#tcount').textContent=`${rows.length} campos`;
 }
+/* ---- exploración de datos: filas, columnas, nombres y tipos ---- */
+function describirColumnas(filas){
+  const cols=filas.length?Object.keys(filas[0]):[];
+  return cols.map(k=>{
+    const nn=filas.map(r=>r[k]).filter(x=>x!=null&&x!=='');
+    const dist=new Set(nn).size;
+    let tipo;
+    if(!nn.length)tipo='Vacío';
+    else if(nn.every(x=>typeof x==='boolean'))tipo='Lógico';
+    else if(nn.every(x=>typeof x==='number'||(typeof x==='string'&&x.trim()!==''&&!isNaN(Number(x.replace(/,/g,''))))))tipo='Numérico';
+    else if(nn.every(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)))tipo='Fecha';
+    else tipo=(dist<=12||(dist/nn.length<0.05&&dist<=1000))?'Categórico':'Texto';
+    return{k,tipo,nulos:filas.length-nn.length,dist,ej:String(nn[0]??'').slice(0,28)};
+  });
+}
+function renderDatos(){
+  const sel=$('#dx-set').value,filas=sel==='pozos'?wellsRaw:DATA;
+  if(!filas.length){$('#dx-info').textContent='No hay datos cargados.';$('#dx-dic').innerHTML='';$('#dx-prev').innerHTML='';return}
+  const cols=Object.keys(filas[0]);
+  const dup=filas.length-new Set(filas.map(r=>JSON.stringify(r))).size;
+  $('#dx-info').innerHTML=`<b>${nf0(filas.length)}</b> filas × <b>${cols.length}</b> columnas · filas duplicadas exactas: <b>${nf0(dup)}</b>`;
+  $('#dx-dic').innerHTML='<thead><tr><th>#</th><th>Columna</th><th>Tipo</th><th>Nulos</th><th>Valores distintos</th><th>Ejemplo</th></tr></thead><tbody>'+
+    describirColumnas(filas).map((c,i)=>`<tr><td>${i+1}</td><td style="text-align:left">${esc(c.k)}</td><td>${c.tipo}</td><td>${nf0(c.nulos)}</td><td>${nf0(c.dist)}</td><td style="text-align:left">${esc(c.ej)}</td></tr>`).join('')+'</tbody>';
+  $('#dx-prev').innerHTML='<thead><tr>'+cols.map(k=>`<th>${esc(k)}</th>`).join('')+'</tr></thead><tbody>'+
+    filas.slice(0,10).map(r=>`<tr>${cols.map(k=>`<td style="text-align:left">${esc(String(r[k]??''))}</td>`).join('')}</tr>`).join('')+'</tbody>';
+}
+$('#dx-set').onchange=renderDatos;
 function renderQual(){
   const q=RESUMEN.calidad||{};
   $('#qual').innerHTML=[
@@ -751,6 +786,7 @@ function renderQual(){
     wellsQual()
   ].map(x=>`<li>${x}</li>`).join('');
   $('#tcom tbody').innerHTML=DATA.filter(d=>d.comentario).map((d,i)=>`<tr data-n="${esc(d.nombre)}"><td>${i+1}</td><td>${esc(d.nombre)}</td><td>${d.ubicacion}</td><td>${nf(d.pce_2p,2)}</td><td style="white-space:normal;text-align:left">${esc(d.comentario)}</td></tr>`).join('');
+  renderDatos();
 }
 const GLOS=[
 ['Campo','Área con uno o varios yacimientos de hidrocarburos descubiertos. Cada fila del archivo es un campo.'],
@@ -1034,11 +1070,7 @@ function repFiltros(F){
   return p.join(' · ')+` · Campos incluidos: <b>${F.length}</b> de ${DATA.length}`;
 }
 function repDiccionario(){
-  const keys=Object.keys(DATA[0]);
-  return keys.map(k=>{const v=DATA.map(d=>d[k]),nn=v.filter(x=>x!=null&&x!=='');const f=nn[0];
-    const dist=new Set(nn).size;
-    const tipo=typeof f==='number'?'Numérico':typeof f==='boolean'?'Lógico':dist<=12?'Categórico':'Texto';
-    return`<tr><td>${esc(k)}</td><td>${tipo}</td><td>${v.length-nn.length}</td><td>${tipo==='Numérico'||tipo==='Lógico'?'—':dist}</td><td>${esc(String(f??'').slice(0,28))}</td></tr>`}).join('');
+  return describirColumnas(DATA).map(c=>`<tr><td>${esc(c.k)}</td><td>${c.tipo}</td><td>${c.nulos}</td><td>${c.tipo==='Numérico'||c.tipo==='Lógico'?'—':c.dist}</td><td>${esc(c.ej)}</td></tr>`).join('');
 }
 /* ---- ficha y comparaciones (campo contra campo, pozo contra pozo) ---- */
 const repSel={a:null,b:null};
@@ -1381,7 +1413,7 @@ $('#as-add').onclick=()=>{ase.add=!ase.add;aseRender();if(tab==='reporte')render
 $('#as-rep').onclick=()=>{ase.add=true;showTab('reporte',true)};
 
 /* ---------- pestañas ---------- */
-const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Calidad y comentarios'],['reporte','Reporte PDF'],['asesor','Asesor técnico'],['glosario','Glosario'],['ayuda','Ayuda']];
+const TABS=[['resumen','Resumen'],['graficas','Gráficas'],['campos','Campos (tabla)'],['pozos','Pozos'],['mapa','Mapa'],['calidad','Datos y calidad'],['reporte','Reporte PDF'],['asesor','Asesor técnico'],['glosario','Glosario'],['ayuda','Ayuda']];
 let tab='resumen';
 function showTab(t,focus){
   tab=t;
