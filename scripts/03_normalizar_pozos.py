@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 03_normalizar_pozos.py
 Lleva un CSV/XLSX de pozos al formato del dashboard y lo cruza con los 477 campos.

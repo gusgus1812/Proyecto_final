@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 01_limpieza_analisis.py
 Limpia el CSV de reservas de campos (CNH/SENER, 01-01-2024), crea variables

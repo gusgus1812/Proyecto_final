@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 02_build_web.py
 Inserta los datos limpios en web/template.html y genera web/index.html

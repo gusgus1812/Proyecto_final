@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Autor: Emmanuel Vázquez Alfaro · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
 """
 09_formatos_txt_sqlite.py
 Convierte los datos del proyecto entre CSV, TXT (separado por tabuladores, | o ;) y SQLite.

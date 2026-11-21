@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 05_descargar_pozos_arcgis.py
 Descarga los pozos desde un servicio ArcGIS REST (el tipo de servicio que usa el

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 06_coordenadas_campos_desde_pozos.py
 Calcula la ubicacion de cada campo a partir de las coordenadas de sus pozos y la guarda en

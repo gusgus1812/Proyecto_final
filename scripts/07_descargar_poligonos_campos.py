@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Autor: Emmanuel Vázquez Alfaro y Gustavo Angel Nava Bautista · © 2026 · Proyecto «Reservas de hidrocarburos de México». Ver LICENSE.
+
 """
 07_descargar_poligonos_campos.py
 Descarga las SUPERFICIES (poligonos) de los campos desde un servicio ArcGIS REST y las guarda en
