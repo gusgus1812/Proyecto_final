@@ -728,7 +728,7 @@ function renderHall(F){
   }
   const ac=F.filter(d=>d.fluido_dominante==='Aceite').length,gs=F.filter(d=>d.fluido_dominante==='Gas').length;
   L.push(`Por fluido: ${ac} campos son principalmente aceite, ${gs} principalmente gas y ${F.length-ac-gs} mixtos o sin reserva.`);
-  const big=F.filter(d=>d.pce_3p>=100&&d.certeza_1p_3p!=null).sort((a,b)=>a.certeza_1p_3p-b.certeza_1p_3p)[0];
+  const big=F.filter(d=>d.pce_3p>=100&&d.certeza_1p_3p!=null).sort((a,b)=>a.certeza_1p_3p-b.certeza_1p_3p||b.pce_3p-a.pce_3p)[0];
   if(big)L.push(`Mayor incertidumbre entre campos con 3P ≥ 100 MMBPCE: <b>${esc(big.nombre)}</b>, solo ${nf(big.certeza_1p_3p*100,0)} % de su 3P está probado (1P).`);
   const gain=[...F].sort((a,b)=>b.probables-a.probables)[0];
   if(gain&&gain.probables>0)L.push(`Mayor potencial de convertir reserva probable en probada: <b>${esc(gain.nombre)}</b> (+${nf0(gain.probables)} MMBPCE entre 1P y 2P).`);
@@ -1053,7 +1053,7 @@ function repAnalisis(F){
   const ub=UBS.map(u=>{const g=F.filter(d=>d.ubicacion===u);return{u,n:g.length,sum:g.reduce((a,d)=>a+d[col],0)}});
   let ac=0,n80=0;if(T>0){for(;n80<s.length;n80++){ac+=s[n80][col];if(ac/T>=.8)break}n80++}
   const t1=F.reduce((a,d)=>a+d.pce_1p,0),t3=F.reduce((a,d)=>a+d.pce_3p,0);
-  const big=F.filter(d=>d.pce_3p>=100&&d.certeza_1p_3p!=null).sort((a,b)=>a.certeza_1p_3p-b.certeza_1p_3p)[0];
+  const big=F.filter(d=>d.pce_3p>=100&&d.certeza_1p_3p!=null).sort((a,b)=>a.certeza_1p_3p-b.certeza_1p_3p||b.pce_3p-a.pce_3p)[0];
   const pr=F.filter(d=>d.superficie_km2>0&&d[col]>0);
   const r=rCorr(pr.map(d=>Math.log10(d.superficie_km2)),pr.map(d=>Math.log10(d[col])));
   const den=UBS.map(u=>({u,m:rMedian(pr.filter(d=>d.ubicacion===u).map(d=>d[col]/d.superficie_km2))})).filter(x=>x.m!=null);
