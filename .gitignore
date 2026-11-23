@@ -3,3 +3,6 @@ __pycache__/
 .venv/
 .DS_Store
 *.zip
+
+# Base SQLite generada por scripts/09 (se regenera; sus bytes cambian en cada corrida)
+data/export/*.db

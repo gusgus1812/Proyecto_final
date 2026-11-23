@@ -24,7 +24,7 @@ data/raw/        CSV original de reservas, sin modificar
 data/external/   pozos_arcgis_crudo.csv (original de pozos, sin modificar) · pozos.csv (normalizado)
                  coordenadas_campos.csv · pozos_plantilla.csv
 data/processed/  CSV/JSON limpios, resúmenes y cobertura de pozos por campo
-data/export/     campos.txt · pozos.txt · reservas.db (TXT y SQLite, los genera el script 09)
+data/export/     campos.txt · pozos.txt (TXT con tabuladores) · reservas.db (SQLite; no se versiona, lo genera el script 09)
 scripts/         01_limpieza_analisis.py · 02_build_web.py · 03_normalizar_pozos.py
                  05_descargar_pozos_arcgis.py · 06_coordenadas_campos_desde_pozos.py
                  07_descargar_poligonos_campos.py (opcional) · 09_formatos_txt_sqlite.py
@@ -61,6 +61,7 @@ python3 scripts/09_formatos_txt_sqlite.py importar --txt mis_pozos.txt   # TXT d
 python3 scripts/09_formatos_txt_sqlite.py importar --db data/export/reservas.db
 python3 scripts/09_formatos_txt_sqlite.py consulta "SELECT ubicacion, COUNT(*) FROM campos GROUP BY 1"
 ```
+`data/export/reservas.db` no está en el repositorio, porque sus bytes cambian en cada corrida aunque los datos sean los mismos. Créalo con el primer comando (`exportar`) antes de usar `importar --db` o `consulta`.
 
 Detalles, límites y cómo encontrar el servicio si cambia: `docs/pozos.md`. 
 
