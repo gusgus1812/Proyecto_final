@@ -74,7 +74,9 @@ Dona y pastel, barras (simples, agrupadas, apiladas), histograma, dispersión lo
 
 ## Pruebas
 ```bash
-python3 tests/test_05_arcgis_simulado.py
+python3 tests/test_01_limpieza.py          # calidad de los datos de reservas (requiere haber corrido el script 01)
+python3 tests/test_03_normalizar_pozos.py  # normalización de pozos
+python3 tests/test_05_arcgis_simulado.py   # descargador de pozos, contra un servidor simulado
 ```
 
 ## En VS Code
