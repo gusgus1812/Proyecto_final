@@ -205,7 +205,10 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <label style="font-size:13px">Mínimo<br><input type="number" id="rg-min" step="any" style="width:120px" placeholder="sin mínimo"></label>
     <label style="font-size:13px">Máximo<br><input type="number" id="rg-max" step="any" style="width:120px" placeholder="sin máximo"></label>
     <button class="btn" id="rg-clr" type="button">Quitar rango</button>
+    <button class="btn" id="rg-minb" type="button" title="Deja en la tabla solo el campo con el menor valor">Ver el menor</button>
+    <button class="btn" id="rg-maxb" type="button" title="Deja en la tabla solo el campo con el mayor valor">Ver el mayor</button>
     <span id="rg-hint" style="font-size:12.5px;color:var(--mute);flex-basis:100%"></span>
+    <span id="rg-ext" style="font-size:13px;flex-basis:100%"></span>
   </div>
   <div class="tw"><table id="tbl"><thead></thead><tbody></tbody></table></div>
   <p class="sub" style="color:var(--mute);font-size:12.5px">Encabezados = ordenar (Enter). Filas: <kbd>↑</kbd><kbd>↓</kbd> para moverse, <kbd>Enter</kbd> para seleccionar.</p>
@@ -346,7 +349,7 @@ function filtered(skip){
     (skip==='tam'||!state.tam||d.tamano_2p===state.tam) &&
     (skip==='flu'||!state.flu||d.fluido_dominante===state.flu) &&
     (skip==='tc'||!state.tc||d.tipo_comentario===state.tc) &&
-    rngOk(d));
+    (skip==='rng'||rngOk(d)));
 }
 
 /* ---------- motor de gráficas con teclado ---------- */
@@ -517,6 +520,23 @@ function rngApply(){
 ['#rg-min','#rg-max'].forEach(s=>$(s).addEventListener('input',rngApply));
 $('#rg-k').addEventListener('change',()=>{$('#rg-min').value='';$('#rg-max').value='';state.rng=null;rngSync();renderAll()});
 $('#rg-clr').onclick=()=>{state.rng=null;rngSync();renderAll()};
+/* menor y mayor valor de la variable elegida, entre los campos que cumplen los demás filtros */
+function rngExt(){
+  const k=$('#rg-k');if(!k)return;
+  const c=filtered('rng').map(d=>({n:d.nombre,v:rv(d,k.value)})).filter(x=>x.v!=null);
+  if(!c.length){$('#rg-ext').textContent='';return}
+  const lo=Math.min(...c.map(x=>x.v)),hi=Math.max(...c.map(x=>x.v));
+  const nom=m=>{const a=c.filter(x=>x.v===m).map(x=>x.n);return a.length<=2?a.join(', '):`${a.slice(0,2).join(', ')} y ${a.length-2} más`};
+  $('#rg-ext').innerHTML=`<b>Menor:</b> ${nf(lo,2)} (${esc(nom(lo))}) · <b>Mayor:</b> ${nf(hi,2)} (${esc(nom(hi))})`;
+}
+function rngVer(cual){
+  const k=$('#rg-k').value,c=filtered('rng').map(d=>rv(d,k)).filter(x=>x!=null);
+  if(!c.length)return;
+  const x=cual==='min'?Math.min(...c):Math.max(...c);
+  state.rng={k,min:x,max:x};rngSync();renderAll();
+}
+$('#rg-minb').onclick=()=>rngVer('min');
+$('#rg-maxb').onclick=()=>rngVer('max');
 
 /* ---------- render ---------- */
 function renderBar(){
@@ -1354,7 +1374,7 @@ $('#tpz tbody').addEventListener('keydown',e=>{const r=e.target.closest('tr[data
 $('#det').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b){toggleCmp(+b.dataset.w,true);showTab('pozos',true);return}if(e.target.closest('[data-act=verpozos]'))showTab('pozos',true)});
 function renderAll(){
   const F=filtered();
-  renderBar();renderDetail();renderKpis(F);renderCharts(F);renderHall(F);renderTable(F);renderPozos(F);
+  renderBar();renderDetail();renderKpis(F);renderCharts(F);renderHall(F);renderTable(F);renderPozos(F);rngExt();;
   if(tab==='mapa')renderMap();
   if(tab==='reporte')renderReport();
 }
