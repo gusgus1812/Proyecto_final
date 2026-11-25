@@ -220,7 +220,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <input list="dl-campos" id="pzcampo" placeholder="Escribe o elige un campo" style="min-width:240px">
     <datalist id="dl-campos"></datalist>
     <label>Cargar pozos (CSV o TXT) <input type="file" id="fpozo2" accept=".csv,.txt,.tsv"></label>
-    <button class="btn" id="pzclr">Borrar pozos cargados</button>
+    <button class="btn" id="pzclr">Restaurar pozos originales</button>
     <button class="btn" id="pzall">Ver todos los campos</button>
   </div>
   <div class="kpis" id="pz-kpis"></div>
@@ -242,7 +242,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;align-items:center;font-size:13px">
     <label>Coordenadas de campos (CSV <code>nombre,lat,lon</code>) <input type="file" id="fcamp" accept=".csv,.txt,.tsv"></label>
     <label>Pozos (CSV <code>pozo,lat,lon,campo</code>) <input type="file" id="fpozo" accept=".csv,.txt,.tsv"></label>
-    <button class="btn" id="clrmap">Borrar mis archivos cargados</button>
+    <button class="btn" id="clrmap">Restaurar datos originales</button>
     <label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="chkpol" checked> Superficies</label><span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
   </div>
   <div id="map" role="application" aria-label="Mapa de campos"></div>

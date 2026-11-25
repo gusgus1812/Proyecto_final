@@ -5,7 +5,7 @@
 - Existe un servicio público de ArcGIS con exactamente esos campos: capa **«Pozos, 2024»** (datos de la CNH / CNIH, alojada en el servidor de SEMARNAT):
   `https://geomaticasig1.semarnat.gob.mx/arcgis/rest/services/Hosted/Pozos_2024/FeatureServer/0`
   Campos del servicio: `pozo, campo, entidad, ubicacin, clasificac, estado_act, tipo_de_hi, fecha_inic, fecha_fin_, profundida, profundi_1, trayectori, disponible, pozos (zona)`; máximo 2000 registros por consulta.
-- **Lo que NO pude comprobar:** desde el entorno donde armé el proyecto no hay acceso a ese servidor, así que no sé cuántos pozos trae ni qué zonas cubre (la descripción del servicio habla de la zona de aguas profundas, pero su lista de zonas incluye Burgos y Veracruz). Tampoco puedo asegurar que sea exactamente la misma capa que usa el mapa. El descargador la prueba contra un servidor simulado (`tests/test_05_arcgis_simulado.py`), no contra el real. Al correrlo en tu computadora verás el total y las zonas; si faltan campos, usa la ruta de abajo.
+- **Resultado de la descarga:** la capa trae 34,147 pozos (17 columnas); 7,534 no pertenecen a ninguno de los 477 campos con reserva. El original queda sin modificar en `data/external/pozos_arcgis_crudo.csv`. No se verificó que sea exactamente la misma capa que usa el mapa de la CNH; si faltaran campos, usa la ruta de abajo. El descargador también se prueba contra un servidor simulado (`tests/test_05_arcgis_simulado.py`).
 
 ## Paso a paso (con internet)
 ```bash

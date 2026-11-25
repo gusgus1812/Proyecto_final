@@ -10,13 +10,13 @@ Las reservas indican cuánto hidrocarburo se puede producir y dónde se concentr
 ## Datos
 | | Reservas por campo | Pozos |
 |---|---|---|
-| Fuente | CNH / SENER: [ENLACE EXACTO DE DESCARGA] | Capa «Pozos, 2024» (CNH/CNIH) alojada en SEMARNAT: https://geomaticasig1.semarnat.gob.mx/arcgis/rest/services/Hosted/Pozos_2024/FeatureServer/0 |
+| Fuente | CNH / SENER | Capa «Pozos, 2024» (CNH/CNIH) alojada en SEMARNAT: https://geomaticasig1.semarnat.gob.mx/arcgis/rest/services/Hosted/Pozos_2024/FeatureServer/0 |
 | Archivo original (sin modificar) | `data/raw/Campos_Reservas_01-01-2024.csv` | `data/external/pozos_arcgis_crudo.csv` |
 | Registros · atributos | 477 · 22 | 34,147 · 17 |
-| Fecha | Corte al 01-01-2024 | Descargado el [FECHA] con `scripts/05_descargar_pozos_arcgis.py` |
+| Fecha | Corte al 01-01-2024 | Descargado con `scripts/05_descargar_pozos_arcgis.py` |
 | Datos de trabajo | `data/processed/` (script 01) | `data/external/pozos.csv`, 16 columnas (script 03) |
 
-Los archivos originales no se modifican: toda limpieza genera archivos nuevos. Son datos públicos reales, sin información personal. Se eligieron porque combinan variables numéricas (reservas, profundidades) y categóricas (ubicación, estado, clasificación) y permiten estudiar concentración, incertidumbre y actividad. La profesora autorizó trabajar con menos de 50,000 registros ([MEDIO Y FECHA DE LA AUTORIZACIÓN]).
+Los archivos originales no se modifican: toda limpieza genera archivos nuevos. Son datos públicos reales, sin información personal. Se eligieron porque combinan variables numéricas (reservas, profundidades) y categóricas (ubicación, estado, clasificación) y permiten estudiar concentración, incertidumbre y actividad.
 
 ## Estructura
 ```
@@ -28,14 +28,14 @@ data/export/     campos.txt · pozos.txt (TXT con tabuladores) · reservas.db (S
 scripts/         01_limpieza_analisis.py · 02_build_web.py · 03_normalizar_pozos.py
                  05_descargar_pozos_arcgis.py · 06_coordenadas_campos_desde_pozos.py
                  07_descargar_poligonos_campos.py (opcional) · 09_formatos_txt_sqlite.py
-tests/           test_05_arcgis_simulado.py (prueba del descargador sin internet)
+tests/           test_01_limpieza.py · test_03_normalizar_pozos.py · test_05_arcgis_simulado.py
 web/             template.html (fuente) e index.html (generado, un solo archivo)
-docs/            glosario, hallazgos, fuente del mapa, guía de pozos, plan de commits, capturas
+docs/            glosario, hallazgos, preguntas de análisis, fuente del mapa, guía de pozos y capturas
 .vscode/         tareas, depuración y extensiones recomendadas
 ```
 
 ## Uso rápido
-Requiere Python 3.10 o superior. Los datos ya vienen en el repositorio, así que no hace falta internet para ejecutarlo.
+Requiere Python 3.10 o superior. Los datos ya vienen en el repositorio, así que no hace falta internet para ejecutarlo (salvo la pestaña Mapa).
 ```bash
 pip install -r requirements.txt
 python3 scripts/01_limpieza_analisis.py   # limpia y calcula  (en Windows: python)
@@ -84,7 +84,7 @@ python3 tests/test_05_arcgis_simulado.py   # descargador de pozos, contra un ser
 Abre la carpeta, acepta las extensiones recomendadas, `Ctrl+Shift+B` ejecuta limpieza + build, clic derecho en `web/index.html` → *Open with Live Server*.
 
 ## Autoría y licencia
-- **Autor:** Emmanuel Vázquez Alfaro (emmanuelvazquezalfaro123@gmail.com) y Gustavo Angel Nava Bautista (navagustavo484@gmail.com) · © 2026. Todos los derechos reservados (ver `LICENSE`).
+- **Autores:** Emmanuel Vázquez Alfaro (emmanuelvazquezalfaro123@gmail.com) y Gustavo Angel Nava Bautista (navagustavo484@gmail.com) · © 2026. Todos los derechos reservados (ver `LICENSE`).
 - El código, el análisis y la documentación son de autoría propia; los datos son públicos de la CNH y SENER y no están cubiertos por la licencia.
 - La autoría queda registrada en el historial de commits de Git (autor y fecha de cada cambio).
 - Los nombres de los autores aparecen en el pie de la aplicación, en cada reporte PDF generado (autores y aviso de derechos) y en el encabezado de los scripts.
