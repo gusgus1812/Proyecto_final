@@ -69,8 +69,8 @@ Detalles, límites y cómo encontrar el servicio si cambia: `docs/pozos.md`.
 Dona y pastel, barras (simples, agrupadas, apiladas), histograma, dispersión log-log, Pareto, tabla ordenable con descarga CSV/JSON, pozos por campo con estado, clasificación, profundidades, días de perforación y comparador (hasta 6), mapa Leaflet con campos y pozos por estado, calidad de datos y glosario. Todo responde a filtros y teclado: `P` (1P/2P/3P), `U` (ubicación), `/` buscar, `Esc` limpiar, `1`–`9` pestañas, flechas + Enter dentro de las gráficas.
 
 ## Limitaciones
-- Sin pozos cargados solo 7 campos tienen coordenadas, y son referenciales (±50 km o más). Con los pozos cargados, cada campo se ubica solo en el centro de sus pozos (`scripts/06_…` lo guarda en CSV). El mapa muestra puntos, no contornos: para eso haría falta un shapefile/GeoJSON (ver `docs/fuente_mapa.md`).
-- El mapa base necesita internet (OpenStreetMap vía Leaflet en cdnjs).
+- Los campos se ubican en el centro de sus pozos (`scripts/06_…` lo guarda en CSV): 451 de 477 tienen ubicación, y es referencial. El mapa muestra puntos y superficies aproximadas, no contornos oficiales: para eso haría falta un shapefile/GeoJSON (ver `docs/fuente_mapa.md`).
+- La pestaña Mapa necesita internet (librería Leaflet en cdnjs y mosaicos de OpenStreetMap); el resto de la aplicación funciona sin internet.
 - Las columnas de volumen original 2P/3P parecen incrementales: confirmar en la nota metodológica de la CNH.
 
 ## Pruebas

@@ -147,7 +147,6 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
 .asetb th:first-child,.asetb td:first-child{text-align:left}
 .rep .ase h4{margin:10px 0 3px;font-size:12.5px}.rep .asetb{font-size:11.5px}
 </style>
-<!--__LEAFLET__-->
 </head>
 <body>
 <header class="top">
@@ -247,7 +246,7 @@ footer{padding:20px 24px;color:var(--mute);font-size:12.5px;text-align:center}
     <label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="chkpol" checked> Superficies</label><span id="mapinfo" style="color:var(--mute)"></span><span style="color:var(--mute)">Pozos: <span class="dot" style="background:var(--st-a)"></span>activo <span class="dot" style="background:var(--st-i)"></span>inactivo <span class="dot" style="background:var(--st-n)"></span>sin dato</span>
   </div>
   <div id="map" role="application" aria-label="Mapa de campos"></div>
-  <div id="mapfall" class="note" hidden>No se pudo cargar la librería del mapa (Leaflet). Para usar el mapa sin internet corre <code>python scripts/08_mapa_sin_internet.py</code> una vez (con internet) y luego <code>python scripts/02_build_web.py</code>.</div>
+  <div id="mapfall" class="note" hidden>No se pudo cargar el mapa: necesita internet para la librería Leaflet y los mosaicos de OpenStreetMap. Conéctate y vuelve a abrir esta pestaña. El resto de la aplicación funciona sin internet.</div>
 </section>
 
 <section class="tp" id="t-calidad" role="tabpanel">
@@ -782,7 +781,21 @@ function indexWells(){
     d.n_pozos=h?a.length:null;d.n_act=h?a.filter(w=>w.cls==='Activo').length:null;d.n_inact=h?a.filter(w=>w.cls==='Inactivo').length:null});
   state.cmp=state.cmp.filter(id=>wells[id]);
 }
-async function loadWellsFile(f){if(!f)return;wellsRaw=parseCsv(await f.text());saveStore('mc_pozos',wellsRaw);indexWells();state.wst=null;state.wtx=null;renderQual();renderAll()}
+/* valida un archivo cargado: debe traer filas y las columnas necesarias; si no, avisa y no cambia nada */
+function validarCsv(filas,req){
+  if(!filas.length)return 'El archivo está vacío o no se pudo leer.';
+  const cols=Object.keys(filas[0]);
+  const falta=req.filter(([,ks])=>!ks.some(k=>cols.includes(k))).map(([n])=>'«'+n+'»');
+  const quien=falta.length>1?`Faltan las columnas ${falta.slice(0,-1).join(', ')} y ${falta[falta.length-1]}`:`Falta la columna ${falta[0]}`;
+  return falta.length?`${quien}. Columnas encontradas: ${cols.slice(0,8).join(', ')}.`:'';
+}
+async function loadWellsFile(f){
+  if(!f)return;
+  const filas=parseCsv(await f.text());
+  const err=validarCsv(filas,[['pozo',['pozo','nombre_pozo','well','nombre']],['campo',['campo','field','nombre_campo']]]);
+  if(err){alert(err+'\nNo se cargó el archivo; se conservan los pozos actuales.');return}
+  wellsRaw=filas;saveStore('mc_pozos',wellsRaw);indexWells();state.wst=null;state.wtx=null;renderQual();renderAll();
+}
 function toggleCmp(id,add){const i=state.cmp.indexOf(id);if(i>=0&&!add)state.cmp.splice(i,1);else if(i<0){state.cmp.push(id);if(state.cmp.length>6)state.cmp.shift()}renderAll()}
 const METRICS={prof:['Profundidad total (m)',w=>w.prof],profv:['Profundidad vertical (m)',w=>w.profv],dias:['Días de perforación',w=>w.dias],desv:['Desviación total − vertical (m)',w=>w.desv]};
 function scopeWells(F){if(state.sel)return wellsOf(state.sel);const set=new Set(F.map(d=>nk(d.nombre)));return wells.filter(w=>set.has(w.campo))}
@@ -939,9 +952,15 @@ function renderMap(){
     $('#mapinfo').textContent=`${conPoli.size?conPoli.size+' superficies · ':''}${n} campos (punto) y ${pozos.length} pozos ubicados · ${F.size-n} campos filtrados sin coordenadas${big?` · hay ${nf0(wm0.length)} pozos: elige un campo (o filtra) para verlos`:''}`;
   });
 }
-$('#fcamp').onchange=async e=>{const f=e.target.files[0];if(!f)return;coords=parseCsv(await f.text());saveStore('mc_coords',coords);renderMap()};
-$('#fpozo').onchange=e=>loadWellsFile(e.target.files[0]);
-$('#fpozo2').onchange=e=>loadWellsFile(e.target.files[0]);
+$('#fcamp').onchange=async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;   // value='' permite volver a elegir el mismo archivo
+  const filas=parseCsv(await f.text());
+  const err=validarCsv(filas,[['nombre',['nombre']],['lat',['lat']],['lon',['lon']]]);
+  if(err){alert(err+'\nNo se cargó el archivo; se conservan las coordenadas actuales.');return}
+  coords=filas;saveStore('mc_coords',coords);renderMap();
+};
+$('#fpozo').onchange=e=>{const f=e.target.files[0];e.target.value='';loadWellsFile(f)};
+$('#fpozo2').onchange=e=>{const f=e.target.files[0];e.target.value='';loadWellsFile(f)};
 function clearLoaded(){coords=COORDS_INI;wellsRaw=POZOS_CSV?parseCsv(POZOS_CSV):[];try{localStorage.removeItem('mc_coords');localStorage.removeItem('mc_pozos')}catch(e){}indexWells();state.cmp=[];state.wst=null;state.wtx=null;renderQual();renderAll()}
 $('#chkpol').onchange=renderMap;$('#clrmap').onclick=clearLoaded;$('#pzclr').onclick=clearLoaded;
 
